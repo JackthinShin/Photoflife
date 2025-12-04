@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局样式增强 */
+html, body, #root { height: 100%; }
+body { font-family: theme('fontFamily.sans'); }
+
+/* 组件样式 */
+.container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+.section-title { @apply text-3xl md:text-4xl font-serif font-bold tracking-tight; }
+.subtle { @apply text-gray-500; }
+.card { @apply bg-white/60 backdrop-blur rounded-xl shadow hover:shadow-lg transition-shadow; }
