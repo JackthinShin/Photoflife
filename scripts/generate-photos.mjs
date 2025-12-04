@@ -85,9 +85,8 @@ async function main() {
 
     const items = []
     for (const abs of files) {
-      const relFromPublic = path.relative(publicDir, abs) // e.g. 'photos/album/img.jpg'
-      const relPosix = toPosix(relFromPublic)
-      const src = `/${relPosix}`
+  const relFromPublic = path.relative(publicDir, abs) // e.g. 'photos/album/img.jpg'
+  const relPosix = toPosix(relFromPublic)
 
       const stat = await fs.stat(abs)
       let date = formatDateYYYYMM(stat.mtime)
@@ -106,7 +105,7 @@ async function main() {
 
       const item = {
         id: idBase || `photo-${hashId}`,
-        src,
+        srcPath: relPosix,
         title,
       }
       if (album) item.album = prettifyName(album)
@@ -149,9 +148,9 @@ async function main() {
     // 时间降序（最近修改在前）
     // items 已有 date 字段字符串 YYYY-MM，不能精确到日；如果需要更精确排序可改为 mtimeMs 排序并额外存储。
 
-    const banner = `// 本文件由 scripts/generate-photos.mjs 自动生成，请勿手改\n// 规则：扫描 public/photos 下的图片；子目录名作为相册 (album)；文件名转为标题\n`
+  const banner = `// 本文件由 scripts/generate-photos.mjs 自动生成，请勿手改\n// 规则：扫描 public/photos 下的图片；子目录名作为相册 (album)；文件名转为标题\n`
 
-    const code = `${banner}const photos = ${JSON.stringify(items, null, 2)}\n\nexport default photos\n`
+  const code = `${banner}const rawBase = import.meta.env.BASE_URL || '/';\nconst base = rawBase.endsWith('/') ? rawBase : rawBase + '/';\nconst photos = [\n${items.map(formatItem).join(',\n')}\n]\n\nexport default photos\n`
     await fs.writeFile(outFile, code, 'utf8')
 
     // 同时生成一个轻量的占位导出（保证空目录时也不报错）
@@ -163,3 +162,35 @@ async function main() {
 }
 
 main()
+
+function escapeString(input) {
+  return input
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\$/g, '\\$')
+    .replace(/'/g, "\\'")
+}
+
+function formatItem(item) {
+  const lines = ['  {']
+  const writeProp = (key, value) => {
+    lines.push(`    ${key}: ${value},`)
+  }
+
+  writeProp('id', `'${escapeString(item.id)}'`)
+  writeProp('src', `base + '${escapeString(item.srcPath)}'`)
+  writeProp('title', `'${escapeString(item.title)}'`)
+  if (item.album) writeProp('album', `'${escapeString(item.album)}'`)
+  if (item.date) writeProp('date', `'${escapeString(item.date)}'`)
+  if (item.takenAt) writeProp('takenAt', `'${escapeString(item.takenAt)}'`)
+  if (item.camera) writeProp('camera', `'${escapeString(item.camera)}'`)
+  if (item.lens) writeProp('lens', `'${escapeString(item.lens)}'`)
+  if (typeof item.focalLength === 'number') writeProp('focalLength', item.focalLength)
+  if (typeof item.focalLength35mm === 'number') writeProp('focalLength35mm', item.focalLength35mm)
+  if (typeof item.aperture === 'number') writeProp('aperture', item.aperture)
+  if (typeof item.iso === 'number') writeProp('iso', item.iso)
+  if (item.shutter) writeProp('shutter', `'${escapeString(item.shutter)}'`)
+  lines[lines.length - 1] = lines[lines.length - 1].replace(/,$/, '')
+  lines.push('  }')
+  return lines.join('\n')
+}
