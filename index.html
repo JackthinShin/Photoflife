@@ -512,7 +512,7 @@
     <button class="filter-tab" id="uploadedTab" onclick="filterGallery(this,'uploaded')">我上传的 ↑</button>
   </div>
   <div class="uploaded-section" id="uploadedSection">
-    <span class="uploaded-badge">✓ 已上传至 Cloudinary</span> 以下照片来自你的上传
+    <span class="uploaded-badge">✓ Cloudinary CDN</span> 照片已同步自 Cloudinary 云端
   </div>
   <div class="gallery" id="mainGallery"></div>
 </section>
@@ -596,7 +596,8 @@
       📋 <strong>使用前配置 Cloudinary：</strong><br>
       ① 免费注册 <a href="https://cloudinary.com" target="_blank">cloudinary.com</a><br>
       ② Dashboard 顶部复制 <code>Cloud Name</code><br>
-      ③ Settings → Upload → 添加 Upload Preset（Mode 选 <code>Unsigned</code>）
+      ③ Settings → Upload → 添加 Upload Preset（Mode 选 <code>Unsigned</code>）<br>
+      ④ Settings → Security → 取消勾选 <code>Resource list</code>（让网站能自动拉取照片）
     </div>
 
     <div class="config-row">
@@ -652,7 +653,9 @@
 // ══════════════════════════════════════
 //  DATA
 // ══════════════════════════════════════
-const defaultPhotos = [
+
+// Fallback placeholder photos (shown only when Cloudinary has no photos yet)
+const placeholderPhotos = [
   { title:'晨雾中的渔船', info:'浙江舟山 · 2024',   cat:'landscape', h:260, grad:'linear-gradient(160deg,#2c4a5e 0%,#1a2d3d 50%,#0d1e2e 100%)', url:null },
   { title:'菜市场的光',   info:'上海 · 街头 · 2024', cat:'street',    h:340, grad:'linear-gradient(140deg,#c8954a 0%,#8c5a20 50%,#5a3810 100%)', url:null },
   { title:'老奶奶',       info:'北京 · 人像 · 2023', cat:'portrait',  h:300, grad:'linear-gradient(160deg,#4a3830 0%,#2d2018 50%,#1e1410 100%)', url:null },
@@ -664,11 +667,88 @@ const defaultPhotos = [
   { title:'云雾南迦巴瓦', info:'西藏 · 2023',        cat:'landscape', h:280, grad:'linear-gradient(160deg,#4a5c6a 0%,#2d3d4a 50%,#1e2d38 100%)', url:null },
 ];
 
-let uploadedPhotos = [];
-const allPhotos = () => [...uploadedPhotos, ...defaultPhotos];
+// Cloud photos fetched from Cloudinary list API
+let cloudPhotos = [];
+// Photos uploaded in current session (show immediately, before Cloudinary cache updates)
+let sessionPhotos = [];
+
+const allPhotos = () => {
+  const real = [...sessionPhotos, ...cloudPhotos];
+  // If we have real photos from Cloudinary, don't show placeholders
+  return real.length > 0 ? real : placeholderPhotos;
+};
+
 let currentFilter = 'all';
 let lightboxList  = [];
 let lightboxIndex = 0;
+
+// ══════════════════════════════════════
+//  CLOUDINARY CONFIG
+// ══════════════════════════════════════
+// Category ↔ tag mapping: upload with these tags, fetch by these tags
+const TAG_ALL       = 'portfolio';    // Every photo gets this tag
+const CAT_TAG_MAP   = { street:'street', portrait:'portrait', landscape:'landscape', film:'film' };
+const TAG_CAT_MAP   = Object.fromEntries(Object.entries(CAT_TAG_MAP).map(([k,v])=>[v,k]));
+
+function getSavedCloudName() { return localStorage.getItem('pf_cloudName') || ''; }
+function getSavedPreset()    { return localStorage.getItem('pf_uploadPreset') || ''; }
+
+// ══════════════════════════════════════
+//  FETCH FROM CLOUDINARY (client-side list API)
+// ══════════════════════════════════════
+async function fetchCloudPhotos() {
+  const cloudName = getSavedCloudName();
+  if (!cloudName) return; // no cloud name configured yet
+
+  try {
+    const res = await fetch(`https://res.cloudinary.com/${cloudName}/image/list/${TAG_ALL}.json`);
+    if (!res.ok) {
+      console.warn('Cloudinary list API returned', res.status, '— make sure Resource List is enabled in Security settings');
+      return;
+    }
+    const data = await res.json();
+    if (!data.resources || !data.resources.length) return;
+
+    cloudPhotos = data.resources.map(r => {
+      const ctx = (r.context && r.context.custom) || {};
+      // Determine category from tags
+      let cat = 'uploaded';
+      if (r.tags) {
+        for (const t of r.tags) {
+          if (TAG_CAT_MAP[t]) { cat = TAG_CAT_MAP[t]; break; }
+        }
+      }
+      // Build optimized URL
+      const url = `https://res.cloudinary.com/${cloudName}/image/upload/q_auto,f_auto,w_1200/${r.public_id}.${r.format}`;
+      // Compute a pseudo-random height for masonry variety based on aspect ratio
+      const h = (r.width && r.height) ? Math.round(280 * (r.height / r.width)) : 280;
+
+      return {
+        title: ctx.caption || ctx.title || beautifyName(r.public_id),
+        info:  ctx.location || ctx.alt || '',
+        cat,
+        url,
+        h: Math.max(180, Math.min(450, h)),
+        grad: null,
+        public_id: r.public_id,
+      };
+    });
+
+    // Remove session photos that already appear in cloudPhotos (Cloudinary cache caught up)
+    const cloudIds = new Set(cloudPhotos.map(p => p.public_id));
+    sessionPhotos = sessionPhotos.filter(p => !cloudIds.has(p.public_id));
+
+    renderGallery();
+  } catch (e) {
+    console.warn('Failed to fetch from Cloudinary:', e);
+  }
+}
+
+// Helper: turn public_id like "photo-portfolio/morning_boat" into "Morning Boat"
+function beautifyName(pid) {
+  const name = pid.split('/').pop();
+  return name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
 
 // ══════════════════════════════════════
 //  SCROLL HEADER
@@ -693,7 +773,7 @@ function toggleDrawer() {
 // ══════════════════════════════════════
 function getFiltered(filter) {
   if (filter === 'all')      return allPhotos();
-  if (filter === 'uploaded') return uploadedPhotos;
+  if (filter === 'uploaded') return allPhotos().filter(p => p.cat === 'uploaded');
   return allPhotos().filter(p => p.cat === filter);
 }
 
@@ -705,7 +785,8 @@ function renderGallery(filter) {
   gallery.innerHTML = '';
 
   const sec = document.getElementById('uploadedSection');
-  sec.classList.toggle('has-items', uploadedPhotos.length > 0 && (currentFilter === 'all' || currentFilter === 'uploaded'));
+  const hasReal = cloudPhotos.length > 0 || sessionPhotos.length > 0;
+  sec.classList.toggle('has-items', hasReal && (currentFilter === 'all' || currentFilter === 'uploaded'));
 
   lightboxList.forEach((p, i) => {
     const item = document.createElement('div');
@@ -830,6 +911,10 @@ async function startUpload() {
   if (!cloudName || !preset)     { setStatus('⚠ 请先填写 Cloud Name 和 Upload Preset', 'error'); return; }
   if (!selectedFiles.length)     { setStatus('⚠ 请先选择照片', 'error'); return; }
 
+  // Save credentials for future use
+  localStorage.setItem('pf_cloudName', cloudName);
+  localStorage.setItem('pf_uploadPreset', preset);
+
   const btn = document.getElementById('uploadSubmit');
   btn.disabled = true;
   const pw = document.getElementById('progressWrap');
@@ -840,6 +925,10 @@ async function startUpload() {
   const location = document.getElementById('photoLocation').value.trim();
   const category = document.getElementById('photoCategory').value;
 
+  // Build tags: always include 'portfolio', plus category tag if applicable
+  const tags = [TAG_ALL];
+  if (CAT_TAG_MAP[category]) tags.push(CAT_TAG_MAP[category]);
+
   let done = 0;
   const results = [];
 
@@ -847,26 +936,32 @@ async function startUpload() {
     setStatus(`正在上传 ${done + 1} / ${selectedFiles.length}…`, '');
     pb.style.width = `${(done / selectedFiles.length) * 90}%`;
 
+    const itemTitle = selectedFiles.length === 1 ? title : `${title} ${done + 1}`;
+
     try {
       const fd = new FormData();
       fd.append('file', file);
       fd.append('upload_preset', preset);
       fd.append('folder', 'photo-portfolio');
+      fd.append('tags', tags.join(','));
+      // Store metadata in Cloudinary context (caption & location)
+      fd.append('context', `caption=${itemTitle}|location=${location || ''}`);
 
       const res  = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method:'POST', body:fd });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      // Auto-optimize: quality auto, format auto, max width 1200px
+      // Auto-optimize URL
       const url = data.secure_url.replace('/upload/', '/upload/q_auto,f_auto,w_1200/');
 
       results.push({
-        title: selectedFiles.length === 1 ? title : `${title} ${done + 1}`,
+        title: itemTitle,
         info:  location || `上传于 ${new Date().getFullYear()}`,
         cat:   category,
         url,
-        h: 280,
+        h: (data.width && data.height) ? Math.max(180, Math.min(450, Math.round(280 * (data.height / data.width)))) : 280,
         grad: null,
+        public_id: data.public_id,
       });
       done++;
     } catch (err) {
@@ -877,7 +972,8 @@ async function startUpload() {
   }
 
   pb.style.width = '100%';
-  uploadedPhotos = [...results, ...uploadedPhotos];
+  // Add to session photos so they appear immediately (before Cloudinary cache refreshes)
+  sessionPhotos = [...results, ...sessionPhotos];
   setStatus(`✓ 成功上传 ${done} 张！已添加到画廊。`, 'success');
   btn.disabled = false;
 
@@ -901,7 +997,17 @@ async function startUpload() {
 // ══════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════
+
+// Restore saved Cloudinary credentials
+const _cn = getSavedCloudName();
+const _up = getSavedPreset();
+if (_cn) document.getElementById('cloudName').value    = _cn;
+if (_up) document.getElementById('uploadPreset').value = _up;
+
+// Render with placeholders first, then fetch real data
 renderGallery('all');
+// Fetch photos from Cloudinary (will re-render gallery when done)
+fetchCloudPhotos();
 </script>
 </body>
 </html>
