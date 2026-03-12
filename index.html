@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#1a1614">
-  <title>光影志 · Photography</title>
+  <title>Photoflife · Photography</title>
+  <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@300;400&family=Space+Mono&display=swap" rel="stylesheet">
   <style>
@@ -27,6 +28,7 @@
       font-family: 'Noto Serif SC', serif;
       font-weight: 300;
       overflow-x: hidden;
+      position: relative;
     }
 
     /* ─────────────────────── HEADER / NAV ─────────────────────── */
@@ -129,54 +131,108 @@
       padding: 8rem 4rem 4rem 6rem; z-index: 2;
     }
     .hero-eyebrow {
-      font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.25em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem;
+      font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 2.5rem;
       opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 2.5rem; height: 1px; background: var(--warm);
     }
     .hero-title {
-      font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 5rem);
-      line-height: 1.1; font-weight: 400; margin-bottom: 0.3rem;
+      font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5.5vw, 5.5rem);
+      line-height: 1.05; font-weight: 400; margin-bottom: 0.3rem;
       opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+      letter-spacing: -0.02em;
     }
-    .hero-title em { font-style: italic; color: var(--warm); display: block; }
+    .hero-title em { font-style: italic; color: var(--warm); display: block; margin-top: 0.15em; }
+    .hero-title em.inline { display: inline; margin-top: 0; }
+    .hero-brand { display: block; margin-bottom: 0.5em; }
+    .hero-bracket {
+      position: relative;
+      display: inline-block;
+      padding: 0.25em 0.8em;
+    }
+    .hero-bracket::before,
+    .hero-bracket::after {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-weight: 300;
+      font-size: 1.15em;
+      color: var(--warm);
+      opacity: 0.45;
+      line-height: 1;
+    }
+    .hero-bracket::before {
+      content: '「';
+      top: -0.1em; left: -0.15em;
+    }
+    .hero-bracket::after {
+      content: '」';
+      bottom: -0.1em; right: -0.15em;
+    }
     .hero-subtitle {
-      font-size: 0.95rem; color: var(--muted); line-height: 1.9; margin-top: 1.5rem; max-width: 340px;
+      font-size: 0.9rem; color: var(--muted); line-height: 2; margin-top: 2rem; max-width: 360px;
       opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+      font-style: italic;
     }
+    .hero-subtitle .typewriter {
+      display: inline;
+      border-right: 2px solid var(--warm);
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink { 50% { border-color: transparent; } }
     .hero-cta {
-      margin-top: 3rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+      margin-top: 3.5rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
       opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
     }
     .btn-primary {
-      background: var(--ink); color: var(--paper); padding: 0.9rem 2.5rem;
-      font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em;
-      text-transform: uppercase; text-decoration: none; transition: background 0.3s, transform 0.2s;
+      background: transparent; color: var(--ink); padding: 0.9rem 2.5rem;
+      font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      position: relative; overflow: hidden;
     }
-    .btn-primary:hover { background: var(--warm); transform: translateY(-2px); }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--ink); transform: translateY(101%);
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      z-index: -1;
+    }
+    .btn-primary:hover { color: var(--paper); transform: translateY(-2px); }
+    .btn-primary:hover::before { transform: translateY(0); }
     .btn-ghost {
-      font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em;
-      color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s;
+      font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em;
+      color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.3s, gap 0.3s;
     }
-    .btn-ghost:hover { color: var(--ink); }
+    .btn-ghost:hover { color: var(--ink); gap: 0.8rem; }
+
+    /* Hero single image */
     .hero-image { position: relative; overflow: hidden; opacity: 0; animation: fadeIn 1.2s 0.3s forwards; }
     .hero-image::before {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(200,149,108,0.15) 0%, transparent 60%); z-index: 1;
+      background: linear-gradient(to left, transparent 40%, var(--paper) 100%);
+      z-index: 2; pointer-events: none;
     }
-    .hero-photo-collage {
-      position: absolute; inset: 0;
-      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; padding: 3px;
+    .hero-image::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--paper) 0%, transparent 25%);
+      z-index: 2; pointer-events: none;
     }
-    .collage-cell { overflow: hidden; position: relative; }
-    .collage-cell:first-child { grid-row: 1 / 3; }
-    .collage-cell .photo-sim { width: 100%; height: 100%; transition: transform 6s ease; }
-    .collage-cell:hover .photo-sim { transform: scale(1.05); }
-    .ps-1 { background: linear-gradient(160deg,#8b6914 0%,#c4932a 40%,#6b4c10 100%); }
-    .ps-2 { background: linear-gradient(200deg,#2c4a38 0%,#1a3228 50%,#4a6854 100%); }
-    .ps-3 { background: linear-gradient(100deg,#5a3e2b 0%,#8c6040 50%,#3d2818 100%); }
-    .photo-label {
-      position: absolute; bottom: 0.5rem; right: 0.5rem;
-      font-family: 'Space Mono', monospace; font-size: 0.55rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em;
+    .hero-single-photo {
+      position: absolute; inset: -5%;
+      background-size: cover; background-position: center;
+      background-color: #2a1f14;
+      transform: scale(1.05);
+      transition: transform 0.1s ease-out;
+    }
+    .hero-photo-meta {
+      position: absolute; bottom: 2rem; right: 2rem; z-index: 3;
+      font-family: 'Space Mono', monospace; font-size: 0.55rem;
+      letter-spacing: 0.15em; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; writing-mode: vertical-rl;
     }
 
     /* ─────────────────────── STATS ─────────────────────── */
@@ -196,17 +252,27 @@
     .section-title em { font-style: italic; color: var(--warm); }
     .section-meta { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
 
+    .filter-bar { padding: 0 6rem 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .filter-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-dim-label {
+      font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--warm); min-width: 56px; flex-shrink: 0; padding-top: 1px;
+    }
     .filter-tabs {
-      padding: 0 6rem 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap;
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
       overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
     .filter-tabs::-webkit-scrollbar { display: none; }
     .filter-tab {
-      font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0.5rem 1.2rem; border: 1px solid var(--light); background: transparent; color: var(--muted);
+      font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.35rem 0.9rem; border: 1px solid var(--light); background: transparent; color: var(--muted);
       transition: all 0.2s; white-space: nowrap; flex-shrink: 0; cursor: pointer;
     }
-    .filter-tab:hover, .filter-tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .filter-tab:hover { border-color: var(--ink); color: var(--ink); }
+    .filter-tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .filter-count {
+      font-size: 0.5rem; opacity: 0.5; margin-left: 0.15rem;
+    }
 
     .gallery { padding: 0 6rem 6rem; columns: 3; column-gap: 1rem; }
     .gallery-item {
@@ -215,7 +281,7 @@
     }
     .gallery-item.visible { opacity: 1; transform: translateY(0); }
     .photo-card { width: 100%; display: block; position: relative; cursor: pointer; }
-    .photo-thumb { width: 100%; display: block; object-fit: cover; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .photo-thumb { width: 100%; height: auto; display: block; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
     .photo-mock { width: 100%; display: block; transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
     .gallery-item:hover .photo-mock,
     .gallery-item:hover .photo-thumb { transform: scale(1.04); }
@@ -266,14 +332,7 @@
       text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; margin-bottom: 1.8rem;
     }
 
-    .config-notice {
-      background: #fff8f0; border: 1px solid #f0d0a8;
-      padding: 0.9rem 1rem; margin-bottom: 1.5rem; font-size: 0.8rem; line-height: 1.7; color: #6b4c20;
-    }
-    .config-notice code { font-family: 'Space Mono', monospace; font-size: 0.72rem; background: rgba(200,149,108,0.15); padding: 0.1em 0.3em; }
-    .config-notice a { color: var(--warm); }
-
-    .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem; }
+    /* config-notice and config-row removed — credentials are hardcoded */
     .field-group { display: flex; flex-direction: column; gap: 0.4rem; }
     .field-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
     .field-input {
@@ -283,9 +342,11 @@
     }
     .field-input:focus { border-color: var(--warm); }
     .field-select {
-      border: 1px solid var(--light); background: white; padding: 0.6rem 0.8rem;
+      border: 1px solid var(--light); background: white; padding: 0.6rem 2rem 0.6rem 0.8rem;
       font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--ink);
       outline: none; width: 100%; transition: border-color 0.2s; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%231a1614'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0.8rem center;
     }
     .field-select:focus { border-color: var(--warm); }
 
@@ -330,14 +391,22 @@
     .series-link { margin-top: 2.5rem; display: inline-flex; align-items: center; gap: 1rem; color: var(--warm); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; transition: gap 0.3s; }
     .series-link:hover { gap: 1.5rem; }
     .series-visuals { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap: 0.5rem; }
-    .sv-main { grid-row: 1/3; height: 380px; background: linear-gradient(145deg,#3d5c48 0%,#1e3829 50%,#2d4a38 100%); position: relative; }
-    .sv-sub-1 { height: 185px; background: linear-gradient(145deg,#6b4c10 0%,#3d2a0a 100%); position: relative; }
-    .sv-sub-2 { height: 185px; background: linear-gradient(145deg,#1e2d3d 0%,#0d1b26 100%); position: relative; }
+    .sv-main { grid-row: 1/3; height: 380px; background-color: #2d4a38; background-image: linear-gradient(145deg,#3d5c48 0%,#1e3829 50%,#2d4a38 100%); position: relative; background-size: cover; background-position: center; overflow: hidden; }
+    .sv-sub-1 { height: 185px; background-color: #3d2a0a; background-image: linear-gradient(145deg,#6b4c10 0%,#3d2a0a 100%); position: relative; background-size: cover; background-position: center; overflow: hidden; }
+    .sv-sub-2 { height: 185px; background-color: #0d1b26; background-image: linear-gradient(145deg,#1e2d3d 0%,#0d1b26 100%); position: relative; background-size: cover; background-position: center; overflow: hidden; }
     .sv-label { position: absolute; bottom: 0.8rem; left: 0.8rem; font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+
+    /* Reversed series: visuals on left, text on right */
+    .series-section.reversed { background: var(--paper); }
+    .series-section.reversed .series-text { color: var(--ink); text-align: right; }
+    .series-section.reversed .series-visuals { order: -1; }
+    .series-section.reversed .series-desc { color: var(--muted); margin-left: auto; margin-right: 0; }
+    .series-section.reversed .series-link { color: var(--warm); justify-content: flex-end; }
+    .series-section.reversed .series-label { text-align: right; }
 
     /* ─────────────────────── ABOUT ─────────────────────── */
     .about-section { padding: 7rem 6rem; display: grid; grid-template-columns: auto 1fr; gap: 8rem; align-items: start; }
-    .about-portrait { width: 220px; height: 280px; background: linear-gradient(160deg,#8c6b4a 0%,#5a3e28 50%,#3d2818 100%); position: relative; flex-shrink: 0; }
+    .about-portrait { width: 220px; height: 280px; background: url('https://res.cloudinary.com/dtggws37g/image/upload/q_auto,f_auto,w_600/20220102_001031861_iOS_z8tlfm') center/cover no-repeat; position: relative; flex-shrink: 0; }
     .about-portrait::after { content: ''; position: absolute; top: 1rem; left: 1rem; right: -1rem; bottom: -1rem; border: 1px solid var(--light); z-index: -1; }
     .about-content { padding-top: 1rem; }
     .about-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm); margin-bottom: 1rem; }
@@ -349,7 +418,7 @@
 
     /* ─────────────────────── FOOTER ─────────────────────── */
     footer { background: var(--ink); color: var(--paper); padding: 4rem 6rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4rem; }
-    .footer-brand .logo { color: var(--paper); font-size: 1.6rem; }
+    .footer-brand .logo { color: var(--paper); font-size: 2.4rem; }
     .footer-brand .logo span { color: var(--warm); }
     .footer-tagline { margin-top: 0.8rem; font-size: 0.85rem; color: rgba(245,240,235,0.45); line-height: 1.8; }
     .footer-col-title { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm); margin-bottom: 1.2rem; }
@@ -394,19 +463,22 @@
 
       .hero { grid-template-columns: 1fr; min-height: auto; }
       .hero-text { padding: 6rem 1.5rem 2.5rem; }
-      .hero-image { height: 55vw; min-height: 200px; }
-      .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); }
+      .hero-image { height: 60vw; min-height: 240px; }
+      .hero-title { font-size: clamp(2.4rem, 9vw, 3.5rem); }
+      .hero-photo-meta { bottom: 1rem; right: 1rem; font-size: 0.5rem; }
 
       .stats-bar { padding: 1.5rem 1rem; gap: 0.5rem; }
       .stat-number { font-size: 1.8rem; }
 
       .section-header { padding: 3rem 1.5rem 1.5rem; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-      .filter-tabs { padding: 0 1.5rem 1.5rem; }
+      .filter-bar { padding: 0 1.5rem 1.5rem; }
+      .filter-dim-label { min-width: 44px; font-size: 0.5rem; }
       .gallery { padding: 0 1.5rem 5rem; columns: 2; column-gap: 0.6rem; }
       .gallery-item { margin-bottom: 0.6rem; }
       .uploaded-section { padding: 0 1.5rem 1rem; }
 
       .series-section { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2.5rem; }
+      .series-section.reversed .series-visuals { order: 0; }
       .series-title { font-size: 2rem; }
       .series-visuals { grid-template-columns: 1.5fr 1fr; }
       .sv-main { height: 260px; }
@@ -424,95 +496,122 @@
       .lightbox-mock { width: 92vw; height: 55vw; }
 
       .upload-panel { padding: 1.8rem 1.2rem; }
-      .config-row, .meta-row { grid-template-columns: 1fr; }
+      .meta-row { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 480px) {
       .gallery { columns: 1; }
       .hero-cta { flex-direction: column; align-items: flex-start; gap: 1rem; }
     }
+
+    /* ─────────────────────── BOKEH ─────────────────────── */
+    .bokeh-canvas {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.7;
+    }
+    .bokeh-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        rgba(200,149,108,0.35) 0%,
+        rgba(200,149,108,0.12) 40%,
+        rgba(200,149,108,0) 70%);
+      animation: bokehFloat linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes bokehFloat {
+      0%   { transform: translate(0, 0) scale(1);     opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(var(--s2)); opacity: 0; }
+    }
   </style>
 </head>
 <body>
 
+<!-- ══ BOKEH BACKGROUND ══ -->
+<div class="bokeh-canvas" id="bokehCanvas"></div>
+
 <!-- ══ HEADER ══ -->
 <header id="siteHeader">
-  <a href="#" class="logo">光影<span>志</span></a>
+  <a href="#" class="logo">Photof<span>life</span></a>
   <nav class="desktop">
-    <a href="#gallery">作品</a>
-    <a href="#series">系列</a>
-    <a href="#about">关于</a>
-    <a href="#contact">联系</a>
-    <button class="nav-upload-btn" onclick="openUpload()">+ 上传</button>
+    <a href="#gallery">Gallery</a>
+    <a href="#series">Series</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <button class="nav-upload-btn" onclick="openUpload()">+ Upload</button>
   </nav>
-  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="菜单">
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 
 <!-- ══ MOBILE DRAWER ══ -->
 <div class="mobile-drawer" id="mobileDrawer">
-  <a href="#gallery" onclick="toggleDrawer()">作品</a>
-  <a href="#series" onclick="toggleDrawer()">系列</a>
-  <a href="#about" onclick="toggleDrawer()">关于</a>
-  <a href="#contact" onclick="toggleDrawer()">联系</a>
-  <button class="drawer-upload" onclick="toggleDrawer(); openUpload()">+ 上传照片</button>
+  <a href="#gallery" onclick="toggleDrawer()">Gallery</a>
+  <a href="#series" onclick="toggleDrawer()">Series</a>
+  <a href="#about" onclick="toggleDrawer()">About</a>
+  <a href="#contact" onclick="toggleDrawer()">Contact</a>
+  <button class="drawer-upload" onclick="toggleDrawer(); openUpload()">+ Upload</button>
 </div>
 
 <!-- ══ BOTTOM NAV ══ -->
 <nav class="bottom-nav">
-  <a href="#gallery" class="active"><span class="bnav-icon">◫</span><span class="bnav-label">作品</span></a>
-  <a href="#series"><span class="bnav-icon">⊞</span><span class="bnav-label">系列</span></a>
-  <a href="#about"><span class="bnav-icon">◎</span><span class="bnav-label">关于</span></a>
-  <a href="#" onclick="openUpload(); return false;"><span class="bnav-icon">↑</span><span class="bnav-label">上传</span></a>
+  <a href="#gallery" class="active"><span class="bnav-icon">◫</span><span class="bnav-label">Gallery</span></a>
+  <a href="#series"><span class="bnav-icon">⊞</span><span class="bnav-label">Series</span></a>
+  <a href="#about"><span class="bnav-icon">◎</span><span class="bnav-label">About</span></a>
+  <a href="#" onclick="openUpload(); return false;"><span class="bnav-icon">↑</span><span class="bnav-label">Upload</span></a>
 </nav>
 
 <!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-text">
-    <p class="hero-eyebrow">— Photography · 摄影记录</p>
-    <h1 class="hero-title">捕捉<br><em>稍纵即逝</em><br>的光</h1>
-    <p class="hero-subtitle">用镜头记录世界的温度与质感。每一帧，都是时间留下的切片。</p>
+    <p class="hero-eyebrow">Photography · Gallery · Photoflife</p>
+    <h1 class="hero-title"><span class="hero-brand">Photof<em class="inline">life</em></span><span class="hero-bracket">Capture<em>The Moment</em></span></h1>
+    <p class="hero-subtitle">
+      <span class="typewriter" id="heroTypewriter"></span>
+    </p>
     <div class="hero-cta">
-      <a href="#gallery" class="btn-primary">浏览作品</a>
-      <a href="#about" class="btn-ghost">关于我 →</a>
+      <a href="#gallery" class="btn-primary">Browse Works</a>
+      <a href="#about" class="btn-ghost">About Me →</a>
     </div>
   </div>
   <div class="hero-image">
-    <div style="width:100%;height:100%;background:linear-gradient(160deg,#2d3a2e 0%,#1a2518 30%,#3d2a1a 60%,#2a1f14 100%);position:relative;">
-      <div class="hero-photo-collage">
-        <div class="collage-cell"><div class="photo-sim ps-1"></div><span class="photo-label">Film · 35mm</span></div>
-        <div class="collage-cell"><div class="photo-sim ps-2"></div><span class="photo-label">Digital · RAW</span></div>
-        <div class="collage-cell"><div class="photo-sim ps-3"></div><span class="photo-label">Street · 2024</span></div>
-      </div>
-    </div>
+    <div class="hero-single-photo" id="heroPhoto"></div>
+    <span class="hero-photo-meta">Photoflife · 2024</span>
   </div>
 </section>
 
 <!-- ══ STATS ══ -->
 <div class="stats-bar">
-  <div class="stat"><div class="stat-number" id="statPhotos">312</div><div class="stat-label">张作品</div></div>
-  <div class="stat"><div class="stat-number">18</div><div class="stat-label">个系列</div></div>
-  <div class="stat"><div class="stat-number">6</div><div class="stat-label">个城市</div></div>
-  <div class="stat"><div class="stat-number">3</div><div class="stat-label">年经历</div></div>
+  <div class="stat"><div class="stat-number" id="statPhotos">312</div><div class="stat-label">Photos</div></div>
+  <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Series</div></div>
+  <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Cities</div></div>
+  <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Years</div></div>
 </div>
 
 <!-- ══ GALLERY ══ -->
 <section id="gallery">
   <div class="section-header">
-    <h2 class="section-title">近期<em>作品</em></h2>
-    <span class="section-meta">Latest Works · 2024–2025</span>
+    <h2 class="section-title">Recent&nbsp;<em>Collections</em></h2>
+    <span class="section-meta">Latest Works · 2025–2026</span>
   </div>
-  <div class="filter-tabs">
-    <button class="filter-tab active" onclick="filterGallery(this,'all')">全部</button>
-    <button class="filter-tab" onclick="filterGallery(this,'street')">街头</button>
-    <button class="filter-tab" onclick="filterGallery(this,'portrait')">人像</button>
-    <button class="filter-tab" onclick="filterGallery(this,'landscape')">风光</button>
-    <button class="filter-tab" onclick="filterGallery(this,'film')">胶片</button>
-    <button class="filter-tab" id="uploadedTab" onclick="filterGallery(this,'uploaded')">我上传的 ↑</button>
+  <div class="filter-bar" id="filterBar">
+    <!-- Filter rows are dynamically generated from Cloudinary context metadata -->
+    <div class="filter-row">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterGallery('all','all')">All</button>
+      </div>
+    </div>
   </div>
   <div class="uploaded-section" id="uploadedSection">
-    <span class="uploaded-badge">✓ Cloudinary CDN</span> 照片已同步自 Cloudinary 云端
+    <span class="uploaded-badge">✓ Cloudinary CDN</span> Photos synced from Cloudinary
   </div>
   <div class="gallery" id="mainGallery"></div>
 </section>
@@ -520,15 +619,45 @@
 <!-- ══ SERIES ══ -->
 <section class="series-section" id="series">
   <div class="series-text">
-    <p class="series-label">Featured Series</p>
-    <h2 class="series-title">消失的<br><em>街角</em></h2>
-    <p class="series-desc">记录城市更新浪潮中那些即将消失的街巷、招牌与面孔。不是挽留，只是见证。</p>
-    <a href="#" class="series-link">查看完整系列 ——</a>
+    <p class="series-label">Philosophy</p>
+    <h2 class="series-title">Every Frame,<br><em>A Story</em></h2>
+    <p class="series-desc"><em>Life unfolds in quiet moments — a slant of light through a window, strangers passing on a wet street, the stillness before dusk. Photography is how I hold on to what time lets go.</em></p>
+    <a href="#gallery" class="series-link">Browse the Gallery ——</a>
   </div>
   <div class="series-visuals">
-    <div class="sv-main"><div class="sv-label">街角系列 · No.01</div></div>
-    <div class="sv-sub-1"><div class="sv-label">No.07</div></div>
-    <div class="sv-sub-2"><div class="sv-label">No.12</div></div>
+    <div class="sv-main" id="svMain"><div class="sv-label">No.01</div></div>
+    <div class="sv-sub-1" id="svSub1"><div class="sv-label">No.07</div></div>
+    <div class="sv-sub-2" id="svSub2"><div class="sv-label">No.12</div></div>
+  </div>
+</section>
+
+<!-- ══ SERIES 2 (REVERSED) ══ -->
+<section class="series-section reversed" id="series2">
+  <div class="series-visuals">
+    <div class="sv-main" id="sv2Main"><div class="sv-label">No.03</div></div>
+    <div class="sv-sub-1" id="sv2Sub1"><div class="sv-label">No.09</div></div>
+    <div class="sv-sub-2" id="sv2Sub2"><div class="sv-label">No.15</div></div>
+  </div>
+  <div class="series-text">
+    <p class="series-label">Perspective</p>
+    <h2 class="series-title">The Beauty in<br><em>Ordinary Days</em></h2>
+    <p class="series-desc"><em>A coffee cup catching the morning sun. Shadows stretching across an empty bench. The laughter you almost didn't notice. Life's most beautiful frames are the ones we nearly walk past.</em></p>
+    <a href="#gallery" class="series-link">Explore More ——</a>
+  </div>
+</section>
+
+<!-- ══ SERIES 3 ══ -->
+<section class="series-section" id="series3">
+  <div class="series-text">
+    <p class="series-label">Moments</p>
+    <h2 class="series-title">Light, Shadow<br><em>& Everything Between</em></h2>
+    <p class="series-desc"><em>We chase sunsets and forget the quiet glow of dawn. We frame the grand and miss the tender. The camera teaches us to slow down — to see what was always there, waiting to be noticed.</em></p>
+    <a href="#gallery" class="series-link">View the Collection ——</a>
+  </div>
+  <div class="series-visuals">
+    <div class="sv-main" id="sv3Main"><div class="sv-label">No.05</div></div>
+    <div class="sv-sub-1" id="sv3Sub1"><div class="sv-label">No.11</div></div>
+    <div class="sv-sub-2" id="sv3Sub2"><div class="sv-label">No.18</div></div>
   </div>
 </section>
 
@@ -536,13 +665,13 @@
 <section class="about-section" id="about">
   <div class="about-portrait"></div>
   <div class="about-content">
-    <p class="about-eyebrow">About · 关于</p>
-    <h2 class="about-title">你好，<em>我是</em><br>一个用镜头思考的人</h2>
-    <p class="about-text">独立摄影师，游走于纪实与艺术之间。喜欢在普通日常里寻找被忽视的美，相信每一张照片都是一次短暂的凝视。现居上海，偶尔出走。</p>
-    <p class="about-text" style="margin-top:0.8rem">接受商业委托、展览合作与出版授权。</p>
+    <p class="about-eyebrow">About · Me</p>
+    <h2 class="about-title">My name is<em> Jackthin Shin</em></h2>
+    <p class="about-text">你好 - Hello - Bonjour - Hola - こんにちは - 안녕하세요 - Ciao<br>I'm a photography enthusiast who loves artistic expression, finding overlooked beauty in everyday life. Building Photo<em>flife</em> has been a joyful journey.</p>
+    <p class="about-text" style="margin-top:0.8rem"><em>Photoflife is Photo of our Life</em></p>
     <div class="gear-list">
-      <span class="gear-tag">Leica M11</span><span class="gear-tag">Nikon F3</span>
-      <span class="gear-tag">Fujifilm X-T5</span><span class="gear-tag">Kodak Portra 400</span><span class="gear-tag">Ilford HP5</span>
+      <span class="gear-tag">Sony A7C2</span><span class="gear-tag">lens 20mm-70mm F4 G</span>
+      <span class="gear-tag">iPhone 16 Pro Max</span><span class="gear-tag">SONY ZV-1</span><span class="gear-tag">Photoflife</span>
     </div>
   </div>
 </section>
@@ -550,26 +679,26 @@
 <!-- ══ FOOTER ══ -->
 <footer id="contact">
   <div class="footer-brand">
-    <a href="#" class="logo">光影<span>志</span></a>
-    <p class="footer-tagline">用摄影记录正在消逝<br>与正在诞生的一切。</p>
+    <a href="#" class="logo">Photof<span>life</span></a>
+    <p class="footer-tagline">用摄影记录正在诞生<br>与正在消逝的一切。</p>
   </div>
   <div>
-    <p class="footer-col-title">导航</p>
+    <p class="footer-col-title">Navigation</p>
     <ul class="footer-links">
-      <li><a href="#gallery">作品集</a></li><li><a href="#series">专题系列</a></li>
-      <li><a href="#about">关于我</a></li><li><a href="#">版权与授权</a></li>
+      <li><a href="#gallery">Gallery</a></li><li><a href="#series">Series</a></li>
+      <li><a href="#about">About</a></li>
     </ul>
   </div>
   <div>
-    <p class="footer-col-title">联系</p>
+    <p class="footer-col-title">Contact</p>
     <ul class="footer-links">
-      <li><a href="#">email@example.com</a></li><li><a href="#">微博 @光影志</a></li>
-      <li><a href="#">Instagram</a></li><li><a href="#">小红书</a></li>
+      <li><a href="#">Mail: jackthin@foxmail.com</a></li><li><a href="#">WeChat @JackthinShin</a></li>
+      <li><a href="#">Github: JackthinShin</a></li>
     </ul>
   </div>
 </footer>
 <div class="footer-bottom">
-  <span class="footer-copy">© 2025 光影志 · All Rights Reserved</span>
+  <span class="footer-copy">© 2026 Photoflife · All Rights Reserved</span>
   <span class="footer-copy">Static Site · Cloudflare Pages</span>
 </div>
 
@@ -589,63 +718,73 @@
 <div class="upload-modal" id="uploadModal" onclick="closeUpload()">
   <div class="upload-panel" onclick="event.stopPropagation()">
     <button class="upload-close" onclick="closeUpload()">✕</button>
-    <h2 class="upload-title">上传<em>照片</em></h2>
-    <p class="upload-subtitle">via Cloudinary · Free CDN Hosting</p>
-
-    <div class="config-notice">
-      📋 <strong>使用前配置 Cloudinary：</strong><br>
-      ① 免费注册 <a href="https://cloudinary.com" target="_blank">cloudinary.com</a><br>
-      ② Dashboard 顶部复制 <code>Cloud Name</code><br>
-      ③ Settings → Upload → 添加 Upload Preset（Mode 选 <code>Unsigned</code>）<br>
-      ④ Settings → Security → 取消勾选 <code>Resource list</code>（让网站能自动拉取照片）
-    </div>
-
-    <div class="config-row">
-      <div class="field-group">
-        <label class="field-label">Cloud Name *</label>
-        <input class="field-input" id="cloudName" placeholder="your-cloud-name">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Upload Preset *</label>
-        <input class="field-input" id="uploadPreset" placeholder="unsigned_preset">
-      </div>
-    </div>
+    <h2 class="upload-title">Upload<em> Photos</em></h2>
+    <p class="upload-subtitle">Cloudinary CDN · Auto-optimized Delivery</p>
 
     <div class="drop-zone" id="dropZone">
       <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
       <div class="drop-icon">⊕</div>
-      <p class="drop-text">点击选择 或 拖拽照片到此处</p>
-      <p class="drop-sub">JPG · PNG · WebP · HEIC，最大 10MB / 张</p>
+      <p class="drop-text">Click to select or drag photos here</p>
+      <p class="drop-sub">JPG · PNG · WebP · HEIC · max 10MB each</p>
     </div>
 
     <div class="preview-strip" id="previewStrip"></div>
 
     <div class="meta-row">
       <div class="field-group">
-        <label class="field-label">照片标题</label>
-        <input class="field-input" id="photoTitle" placeholder="例：晨雾中的渔船">
+        <label class="field-label">Caption</label>
+        <input class="field-input" id="photoTitle" placeholder="e.g. Morning Boats">
       </div>
       <div class="field-group">
-        <label class="field-label">拍摄地点</label>
-        <input class="field-input" id="photoLocation" placeholder="例：浙江舟山 · 2024">
+        <label class="field-label">Location</label>
+        <input class="field-input" id="photoLocation" placeholder="e.g. Tokyo">
       </div>
     </div>
-    <div class="field-group" style="margin-bottom:1rem">
-      <label class="field-label">分类</label>
-      <select class="field-select" id="photoCategory">
-        <option value="uploaded">未分类</option>
-        <option value="street">街头</option>
-        <option value="portrait">人像</option>
-        <option value="landscape">风光</option>
-        <option value="film">胶片</option>
-      </select>
+    <div class="meta-row">
+      <div class="field-group">
+        <label class="field-label">Style</label>
+        <select class="field-select" id="ctxStyle">
+          <option value="">— Select —</option>
+          <option value="street">Street</option>
+          <option value="portrait">Portrait</option>
+          <option value="landscape">Landscape</option>
+          <option value="film">Film</option>
+          <option value="architecture">Architecture</option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="abstract">Abstract</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Year</label>
+        <input class="field-input" id="ctxYear" placeholder="e.g. 2026" type="number" min="2000" max="2099">
+      </div>
+    </div>
+    <div class="meta-row">
+      <div class="field-group">
+        <label class="field-label">Mood</label>
+        <select class="field-select" id="ctxMood">
+          <option value="">— Select —</option>
+          <option value="night">Night</option>
+          <option value="golden-hour">Golden Hour</option>
+          <option value="rainy">Rainy</option>
+          <option value="calm">Calm</option>
+          <option value="moody">Moody</option>
+          <option value="vibrant">Vibrant</option>
+          <option value="minimal">Minimal</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Extra <span style="opacity:0.5;font-size:0.65em">key=value, comma separated</span></label>
+        <input class="field-input" id="ctxExtra" placeholder="e.g. camera=Fuji X100V, film=Portra 400">
+      </div>
     </div>
 
     <div class="progress-bar-wrap" id="progressWrap">
       <div class="progress-bar" id="progressBar"></div>
     </div>
-    <p class="upload-status" id="uploadStatus">准备就绪</p>
-    <button class="upload-submit" id="uploadSubmit" onclick="startUpload()">开始上传到 Cloudinary</button>
+    <p class="upload-status" id="uploadStatus">Ready</p>
+    <button class="upload-submit" id="uploadSubmit" onclick="startUpload()">Upload to Cloudinary</button>
   </div>
 </div>
 
@@ -656,15 +795,15 @@
 
 // Fallback placeholder photos (shown only when Cloudinary has no photos yet)
 const placeholderPhotos = [
-  { title:'晨雾中的渔船', info:'浙江舟山 · 2024',   cat:'landscape', h:260, grad:'linear-gradient(160deg,#2c4a5e 0%,#1a2d3d 50%,#0d1e2e 100%)', url:null },
-  { title:'菜市场的光',   info:'上海 · 街头 · 2024', cat:'street',    h:340, grad:'linear-gradient(140deg,#c8954a 0%,#8c5a20 50%,#5a3810 100%)', url:null },
-  { title:'老奶奶',       info:'北京 · 人像 · 2023', cat:'portrait',  h:300, grad:'linear-gradient(160deg,#4a3830 0%,#2d2018 50%,#1e1410 100%)', url:null },
-  { title:'盐田黄昏',     info:'福建 · 2024',        cat:'landscape', h:200, grad:'linear-gradient(140deg,#e8a840 0%,#c47820 50%,#8c4e10 100%)', url:null },
-  { title:'Portra 400',  info:'胶片 · 2024',         cat:'film',      h:380, grad:'linear-gradient(160deg,#6b8c6a 0%,#3d5c3a 50%,#2a3e28 100%)', url:null },
-  { title:'雨后的弄堂',   info:'上海 · 街头 · 2024', cat:'street',    h:260, grad:'linear-gradient(140deg,#3d3d4a 0%,#252535 50%,#1a1a28 100%)', url:null },
-  { title:'候车的人',     info:'成都 · 人像 · 2023', cat:'portrait',  h:310, grad:'linear-gradient(160deg,#5a4838 0%,#3d3020 50%,#281e14 100%)', url:null },
-  { title:'HP5 · Night', info:'黑白 · 胶片 · 2023', cat:'film',      h:230, grad:'linear-gradient(140deg,#2a2a2a 0%,#1a1a1a 50%,#0d0d0d 100%)', url:null },
-  { title:'云雾南迦巴瓦', info:'西藏 · 2023',        cat:'landscape', h:280, grad:'linear-gradient(160deg,#4a5c6a 0%,#2d3d4a 50%,#1e2d38 100%)', url:null },
+  { title:'Morning Boats',    info:'Zhoushan · 2024',  meta:{style:'landscape',location:'Zhoushan',year:'2024'},          h:260, grad:'linear-gradient(160deg,#2c4a5e 0%,#1a2d3d 50%,#0d1e2e 100%)', url:null },
+  { title:'Market Light',     info:'Shanghai · 2024',   meta:{style:'street',location:'Shanghai',year:'2024'},             h:340, grad:'linear-gradient(140deg,#c8954a 0%,#8c5a20 50%,#5a3810 100%)', url:null },
+  { title:'Grandmother',      info:'Beijing · 2023',    meta:{style:'portrait',location:'Beijing',year:'2023'},            h:300, grad:'linear-gradient(160deg,#4a3830 0%,#2d2018 50%,#1e1410 100%)', url:null },
+  { title:'Salt Fields Dusk', info:'Fujian · 2024',     meta:{style:'landscape',location:'Fujian',year:'2024'},            h:200, grad:'linear-gradient(140deg,#e8a840 0%,#c47820 50%,#8c4e10 100%)', url:null },
+  { title:'Portra 400',       info:'Film · 2024',       meta:{style:'film',year:'2024'},                                   h:380, grad:'linear-gradient(160deg,#6b8c6a 0%,#3d5c3a 50%,#2a3e28 100%)', url:null },
+  { title:'Rainy Alley',      info:'Shanghai · 2024',   meta:{style:'street',location:'Shanghai',year:'2024'},             h:260, grad:'linear-gradient(140deg,#3d3d4a 0%,#252535 50%,#1a1a28 100%)', url:null },
+  { title:'Waiting',          info:'Chengdu · 2023',    meta:{style:'portrait',location:'Chengdu',year:'2023'},            h:310, grad:'linear-gradient(160deg,#5a4838 0%,#3d3020 50%,#281e14 100%)', url:null },
+  { title:'HP5 · Night',      info:'B&W · Film · 2023', meta:{style:'film',mood:'night',year:'2023'},                      h:230, grad:'linear-gradient(140deg,#2a2a2a 0%,#1a1a1a 50%,#0d0d0d 100%)', url:null },
+  { title:'Namcha Barwa',     info:'Tibet · 2023',      meta:{style:'landscape',location:'Tibet',year:'2023'},             h:280, grad:'linear-gradient(160deg,#4a5c6a 0%,#2d3d4a 50%,#1e2d38 100%)', url:null },
 ];
 
 // Cloud photos fetched from Cloudinary list API
@@ -678,7 +817,6 @@ const allPhotos = () => {
   return real.length > 0 ? real : placeholderPhotos;
 };
 
-let currentFilter = 'all';
 let lightboxList  = [];
 let lightboxIndex = 0;
 
@@ -688,10 +826,24 @@ let lightboxIndex = 0;
 const CLOUD_NAME    = 'dtggws37g';
 const UPLOAD_PRESET = 'Photoflife_Upload';
 
-// Category ↔ tag mapping: upload with these tags, fetch by these tags
-const TAG_ALL       = 'portfolio';    // Every photo gets this tag
-const CAT_TAG_MAP   = { street:'street', portrait:'portrait', landscape:'landscape', film:'film' };
-const TAG_CAT_MAP   = Object.fromEntries(Object.entries(CAT_TAG_MAP).map(([k,v])=>[v,k]));
+const TAG_ALL = 'portfolio';  // Every photo gets this tag
+
+// ── CONTEXT-BASED DIMENSION SYSTEM ──
+// Cloudinary context (key=value) fields used for filtering.
+// The list API returns these in r.context.custom.
+// Keys listed here become filter dimensions; values become filter buttons.
+// Add new dimensions simply by adding a key here and setting it in Cloudinary.
+const DIM_KEYS = {
+  'style':    'Style',      // e.g. street, portrait, landscape, film
+  'location': 'Location',   // e.g. Tokyo, Melbourne, Hangzhou
+  'year':     'Year',       // e.g. 2024, 2025
+  'mood':     'Mood',       // e.g. night, golden-hour, rainy
+};
+// Context keys reserved for display (not used as filter dimensions)
+const RESERVED_CTX = new Set(['caption', 'title', 'alt']);
+
+// Active filters: { dimensionKey: selectedValue } — 'all' means no filter
+let activeFilters = {};
 
 function getCloudName() { return CLOUD_NAME || localStorage.getItem('pf_cloudName') || ''; }
 function getPreset()    { return UPLOAD_PRESET || localStorage.getItem('pf_uploadPreset') || ''; }
@@ -717,22 +869,22 @@ async function fetchCloudPhotos() {
 
     cloudPhotos = data.resources.map(r => {
       const ctx = (r.context && r.context.custom) || {};
-      // Determine category from tags
-      let cat = 'uploaded';
-      if (r.tags) {
-        for (const t of r.tags) {
-          if (TAG_CAT_MAP[t]) { cat = TAG_CAT_MAP[t]; break; }
+      // Extract filter dimensions from context key-value pairs
+      const meta = {};
+      for (const [key, val] of Object.entries(ctx)) {
+        if (!RESERVED_CTX.has(key) && val) {
+          meta[key] = val.trim();
         }
       }
       // Build optimized URL
       const url = `https://res.cloudinary.com/${cloudName}/image/upload/q_auto,f_auto,w_1200/${r.public_id}.${r.format}`;
-      // Compute a pseudo-random height for masonry variety based on aspect ratio
+      // Compute height for masonry based on aspect ratio
       const h = (r.width && r.height) ? Math.round(280 * (r.height / r.width)) : 280;
 
       return {
         title: ctx.caption || ctx.title || beautifyName(r.public_id),
         info:  ctx.location || ctx.alt || '',
-        cat,
+        meta,
         url,
         h: Math.max(180, Math.min(450, h)),
         grad: null,
@@ -744,7 +896,9 @@ async function fetchCloudPhotos() {
     const cloudIds = new Set(cloudPhotos.map(p => p.public_id));
     sessionPhotos = sessionPhotos.filter(p => !cloudIds.has(p.public_id));
 
+    buildFilterUI();
     renderGallery();
+    fillSeriesImages();
   } catch (e) {
     console.warn('Failed to fetch from Cloudinary:', e);
   }
@@ -754,6 +908,41 @@ async function fetchCloudPhotos() {
 function beautifyName(pid) {
   const name = pid.split('/').pop();
   return name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// Fill Hero & Series sections with random photos from Cloudinary
+const HERO_COVER = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/q_auto,f_auto,w_1600/photo-portfolio/nvicygcdq5xhc6c1a1di`;
+
+function fillSeriesImages() {
+  // Hero: fixed cover photo
+  const heroEl = document.getElementById('heroPhoto');
+  if (heroEl) heroEl.style.backgroundImage = `url(${HERO_COVER})`;
+
+  // Series: random photos from Cloudinary
+  const all = [...sessionPhotos, ...cloudPhotos].filter(p => p.url);
+  if (all.length === 0) return;
+  const shuffled = all.sort(() => Math.random() - 0.5);
+  const pick = (start, count) => {
+    const pics = [];
+    for (let i = 0; i < count; i++) pics.push(shuffled[(start + i) % shuffled.length]);
+    return pics;
+  };
+
+  // Series sections
+  const picks1 = pick(0, 3);
+  const picks2 = pick(3, 3);
+  const picks3 = pick(6, 3);
+  const groups = [
+    [['svMain', 'svSub1', 'svSub2'], picks1],
+    [['sv2Main', 'sv2Sub1', 'sv2Sub2'], picks2],
+    [['sv3Main', 'sv3Sub1', 'sv3Sub2'], picks3],
+  ];
+  groups.forEach(([ids, pics]) => {
+    ids.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && pics[i]) el.style.backgroundImage = `url(${pics[i].url})`;
+    });
+  });
 }
 
 // ══════════════════════════════════════
@@ -775,36 +964,121 @@ function toggleDrawer() {
 }
 
 // ══════════════════════════════════════
-//  GALLERY
+//  CONTEXT → FILTER DIMENSIONS
 // ══════════════════════════════════════
-function getFiltered(filter) {
-  if (filter === 'all')      return allPhotos();
-  if (filter === 'uploaded') return allPhotos().filter(p => p.cat === 'uploaded');
-  return allPhotos().filter(p => p.cat === filter);
+
+function buildFilterUI() {
+  // Collect all context values across all photos, grouped by dimension key
+  const dimValues = {}; // { 'style': Map{ 'street' => 3, 'portrait' => 2 }, ... }
+  allPhotos().forEach(p => {
+    const meta = p.meta || {};
+    for (const [key, val] of Object.entries(meta)) {
+      if (!dimValues[key]) dimValues[key] = new Map();
+      dimValues[key].set(val, (dimValues[key].get(val) || 0) + 1);
+    }
+  });
+
+  // Build ordered list: known dimensions first (from DIM_KEYS), then any extra context keys
+  const knownKeys = Object.keys(DIM_KEYS).filter(k => dimValues[k] && dimValues[k].size > 0);
+  const extraKeys = Object.keys(dimValues).filter(k => !DIM_KEYS[k] && !RESERVED_CTX.has(k) && dimValues[k].size > 0);
+  const allDimKeys = [...knownKeys, ...extraKeys];
+
+  // Reset active filters
+  activeFilters = {};
+  allDimKeys.forEach(k => activeFilters[k] = 'all');
+
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = '';
+
+  // If no dimensions found, just show "All"
+  if (allDimKeys.length === 0) {
+    bar.innerHTML = `<div class="filter-row"><div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterGallery('_all','all')">All</button>
+    </div></div>`;
+    return;
+  }
+
+  // Build one row per dimension
+  allDimKeys.forEach(key => {
+    const dimLabel = DIM_KEYS[key] || key.charAt(0).toUpperCase() + key.slice(1);
+    const row = document.createElement('div');
+    row.className = 'filter-row';
+    row.dataset.dim = key;
+
+    const label = document.createElement('span');
+    label.className = 'filter-dim-label';
+    label.textContent = dimLabel;
+    row.appendChild(label);
+
+    const tabs = document.createElement('div');
+    tabs.className = 'filter-tabs';
+
+    // "All" button for this dimension
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-tab active';
+    allBtn.textContent = 'All';
+    allBtn.onclick = () => filterGallery(key, 'all');
+    tabs.appendChild(allBtn);
+
+    // Sort values: Year descending, others alphabetically
+    const entries = [...dimValues[key].entries()];
+    if (key === 'year') {
+      entries.sort((a, b) => b[0].localeCompare(a[0]));
+    } else {
+      entries.sort((a, b) => a[0].localeCompare(b[0]));
+    }
+
+    entries.forEach(([value, count]) => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-tab';
+      btn.dataset.val = value;
+      btn.innerHTML = `${value}<span class="filter-count"> ${count}</span>`;
+      btn.onclick = () => filterGallery(key, value);
+      tabs.appendChild(btn);
+    });
+
+    row.appendChild(tabs);
+    bar.appendChild(row);
+  });
 }
 
-function renderGallery(filter) {
-  currentFilter = filter || currentFilter;
-  lightboxList  = getFiltered(currentFilter);
+// ══════════════════════════════════════
+//  GALLERY
+// ══════════════════════════════════════
+function getFiltered() {
+  const photos = allPhotos();
+  // Check if any dimension has an active (non-all) filter
+  const activeDims = Object.entries(activeFilters).filter(([, v]) => v !== 'all');
+  if (activeDims.length === 0) return photos;
+
+  return photos.filter(p => {
+    const meta = p.meta || {};
+    // Photo must match ALL active dimension filters
+    return activeDims.every(([key, val]) => meta[key] === val);
+  });
+}
+
+function renderGallery() {
+  lightboxList = getFiltered();
 
   const gallery = document.getElementById('mainGallery');
   gallery.innerHTML = '';
 
   const sec = document.getElementById('uploadedSection');
   const hasReal = cloudPhotos.length > 0 || sessionPhotos.length > 0;
-  sec.classList.toggle('has-items', hasReal && (currentFilter === 'all' || currentFilter === 'uploaded'));
+  sec.classList.toggle('has-items', hasReal);
 
   lightboxList.forEach((p, i) => {
     const item = document.createElement('div');
     item.className = 'gallery-item';
     const visual = p.url
-      ? `<img class="photo-thumb" src="${p.url}" alt="${p.title}" loading="lazy" style="height:${p.h||280}px;">`
+      ? `<img class="photo-thumb" src="${p.url}" alt="${p.title}" loading="lazy">`
       : `<div class="photo-mock" style="height:${p.h}px;background:${p.grad};"></div>`;
     item.innerHTML = `
       <div class="photo-card" onclick="openLightbox(${i})">
         ${visual}
         <div class="photo-overlay">
-          <div class="photo-title">${p.title || '未命名'}</div>
+          <div class="photo-title">${p.title || 'Untitled'}</div>
           <div class="photo-info">${p.info || ''}</div>
         </div>
       </div>`;
@@ -819,10 +1093,28 @@ function renderGallery(filter) {
   document.getElementById('statPhotos').textContent = allPhotos().length;
 }
 
-function filterGallery(btn, cat) {
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderGallery(cat);
+function filterGallery(dim, value) {
+  // Update active filter for this dimension
+  activeFilters[dim] = value;
+
+  // Update button states for this dimension's row
+  const bar = document.getElementById('filterBar');
+  const rows = bar.querySelectorAll('.filter-row');
+  rows.forEach(row => {
+    if (row.dataset.dim === dim) {
+      const btns = row.querySelectorAll('.filter-tab');
+      btns.forEach((btn, i) => {
+        if (i === 0) {
+          // First button is always "All"
+          btn.classList.toggle('active', value === 'all');
+        } else {
+          btn.classList.toggle('active', btn.dataset.val === value);
+        }
+      });
+    }
+  });
+
+  renderGallery();
 }
 
 // ══════════════════════════════════════
@@ -902,7 +1194,7 @@ function handleFiles(files) {
     };
     reader.readAsDataURL(f);
   });
-  setStatus(`已选择 ${selectedFiles.length} 张照片`, '');
+  setStatus(`${selectedFiles.length} photo(s) selected`, '');
 }
 
 function setStatus(msg, type) {
@@ -912,12 +1204,11 @@ function setStatus(msg, type) {
 }
 
 async function startUpload() {
-  const cloudName = document.getElementById('cloudName').value.trim();
-  const preset    = document.getElementById('uploadPreset').value.trim();
-  if (!cloudName || !preset)     { setStatus('⚠ 请先填写 Cloud Name 和 Upload Preset', 'error'); return; }
-  if (!selectedFiles.length)     { setStatus('⚠ 请先选择照片', 'error'); return; }
+  const cloudName = CLOUD_NAME;
+  const preset    = UPLOAD_PRESET;
+  if (!selectedFiles.length)     { setStatus('⚠ Please select photos first', 'error'); return; }
 
-  // Save credentials for future use
+  // Save credentials for future use (kept for backward compat)
   localStorage.setItem('pf_cloudName', cloudName);
   localStorage.setItem('pf_uploadPreset', preset);
 
@@ -927,22 +1218,55 @@ async function startUpload() {
   const pb = document.getElementById('progressBar');
   pw.style.display = 'block';
 
-  const title    = document.getElementById('photoTitle').value.trim() || '未命名';
+  const title    = document.getElementById('photoTitle').value.trim() || 'Untitled';
   const location = document.getElementById('photoLocation').value.trim();
-  const category = document.getElementById('photoCategory').value;
+  const ctxStyle = document.getElementById('ctxStyle').value;
+  const ctxYear  = document.getElementById('ctxYear').value.trim();
+  const ctxMood  = document.getElementById('ctxMood').value;
+  const ctxExtra = document.getElementById('ctxExtra').value.trim();
 
-  // Build tags: always include 'portfolio', plus category tag if applicable
+  // Build Cloudinary context string: key=value|key=value
+  // caption and location are reserved for display; style/year/mood/etc are filter dimensions
+  const ctxParts = [`caption=${title}`];
+  if (location) ctxParts.push(`location=${location}`);
+  if (ctxStyle)  ctxParts.push(`style=${ctxStyle}`);
+  if (ctxYear)   ctxParts.push(`year=${ctxYear}`);
+  if (ctxMood)   ctxParts.push(`mood=${ctxMood}`);
+  // Parse extra key=value pairs
+  if (ctxExtra) {
+    ctxExtra.split(',').forEach(pair => {
+      const [k, ...rest] = pair.split('=');
+      if (k && rest.length) ctxParts.push(`${k.trim()}=${rest.join('=').trim()}`);
+    });
+  }
+  const contextStr = ctxParts.join('|');
+
+  // Build meta object for immediate session display
+  const meta = {};
+  if (location) meta.location = location;
+  if (ctxStyle)  meta.style = ctxStyle;
+  if (ctxYear)   meta.year = ctxYear;
+  if (ctxMood)   meta.mood = ctxMood;
+  if (ctxExtra) {
+    ctxExtra.split(',').forEach(pair => {
+      const [k, ...rest] = pair.split('=');
+      if (k && rest.length) meta[k.trim()] = rest.join('=').trim();
+    });
+  }
+
+  // Build tags: only 'portfolio' is needed for the list API
   const tags = [TAG_ALL];
-  if (CAT_TAG_MAP[category]) tags.push(CAT_TAG_MAP[category]);
 
   let done = 0;
   const results = [];
 
   for (const file of selectedFiles) {
-    setStatus(`正在上传 ${done + 1} / ${selectedFiles.length}…`, '');
+    setStatus(`Uploading ${done + 1} / ${selectedFiles.length}…`, '');
     pb.style.width = `${(done / selectedFiles.length) * 90}%`;
 
     const itemTitle = selectedFiles.length === 1 ? title : `${title} ${done + 1}`;
+    // Build per-item context (update caption for multi-file)
+    const itemCtx = contextStr.replace(`caption=${title}`, `caption=${itemTitle}`);
 
     try {
       const fd = new FormData();
@@ -950,8 +1274,7 @@ async function startUpload() {
       fd.append('upload_preset', preset);
       fd.append('folder', 'photo-portfolio');
       fd.append('tags', tags.join(','));
-      // Store metadata in Cloudinary context (caption & location)
-      fd.append('context', `caption=${itemTitle}|location=${location || ''}`);
+      fd.append('context', itemCtx);
 
       const res  = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method:'POST', body:fd });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -962,8 +1285,8 @@ async function startUpload() {
 
       results.push({
         title: itemTitle,
-        info:  location || `上传于 ${new Date().getFullYear()}`,
-        cat:   category,
+        info:  location || `Uploaded ${new Date().getFullYear()}`,
+        meta:  { ...meta },
         url,
         h: (data.width && data.height) ? Math.max(180, Math.min(450, Math.round(280 * (data.height / data.width)))) : 280,
         grad: null,
@@ -971,7 +1294,7 @@ async function startUpload() {
       });
       done++;
     } catch (err) {
-      setStatus(`✗ 第 ${done + 1} 张失败：${err.message}`, 'error');
+      setStatus(`✗ Photo ${done + 1} failed: ${err.message}`, 'error');
       btn.disabled = false;
       return;
     }
@@ -980,7 +1303,7 @@ async function startUpload() {
   pb.style.width = '100%';
   // Add to session photos so they appear immediately (before Cloudinary cache refreshes)
   sessionPhotos = [...results, ...sessionPhotos];
-  setStatus(`✓ 成功上传 ${done} 张！已添加到画廊。`, 'success');
+  setStatus(`✓ Successfully uploaded ${done} photo(s)!`, 'success');
   btn.disabled = false;
 
   // Reset
@@ -989,13 +1312,18 @@ async function startUpload() {
   document.getElementById('fileInput').value        = '';
   document.getElementById('photoTitle').value       = '';
   document.getElementById('photoLocation').value    = '';
+  document.getElementById('ctxStyle').value         = '';
+  document.getElementById('ctxYear').value          = '';
+  document.getElementById('ctxMood').value          = '';
+  document.getElementById('ctxExtra').value         = '';
 
-  renderGallery('all');
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.toggle('active', b.textContent.trim() === '全部'));
+  // Rebuild filters to include new context values, then show all
+  buildFilterUI();
+  renderGallery();
 
   setTimeout(() => {
     closeUpload();
-    pw.style.display = 'none'; pb.style.width = '0'; setStatus('准备就绪', '');
+    pw.style.display = 'none'; pb.style.width = '0'; setStatus('Ready', '');
     document.querySelector('#gallery').scrollIntoView({ behavior:'smooth' });
   }, 1800);
 }
@@ -1004,16 +1332,145 @@ async function startUpload() {
 //  INIT
 // ══════════════════════════════════════
 
-// Pre-fill Cloudinary credentials from hardcoded config or localStorage
-const _cn = getCloudName();
-const _up = getPreset();
-if (_cn) document.getElementById('cloudName').value    = _cn;
-if (_up) document.getElementById('uploadPreset').value = _up;
+// Auto-fill Year field with current year
+document.getElementById('ctxYear').value = new Date().getFullYear();
 
 // Render with placeholders first, then fetch real data
-renderGallery('all');
+buildFilterUI();
+renderGallery();
 // Fetch photos from Cloudinary (will re-render gallery when done)
 fetchCloudPhotos();
+
+// Always start at the top on page load
+if (window.location.hash) history.replaceState(null, '', ' ');
+window.scrollTo(0, 0);
+
+// ══════════════════════════════════════
+//  TYPEWRITER EFFECT
+// ══════════════════════════════════════
+(function initTypewriter() {
+  const phrases = [
+    '用镜头记录世界的温度与质感。',
+    'Every frame is a slice of time.',
+    '每一帧，都是时间留下的切片。',
+    'Photography is how I hold on to what time lets go.',
+    'Life unfolds in quiet moments.',
+  ];
+  const el = document.getElementById('heroTypewriter');
+  if (!el) return;
+  let phraseIdx = 0, charIdx = 0, deleting = false;
+
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, ++charIdx);
+      if (charIdx === current.length) { setTimeout(() => { deleting = true; tick(); }, 2800); return; }
+      setTimeout(tick, 60 + Math.random() * 40);
+    } else {
+      el.textContent = current.slice(0, --charIdx);
+      if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; setTimeout(tick, 500); return; }
+      setTimeout(tick, 30);
+    }
+  }
+  setTimeout(tick, 1200);
+})();
+
+// ══════════════════════════════════════
+//  HERO MOUSE PARALLAX
+// ══════════════════════════════════════
+(function initHeroParallax() {
+  const hero = document.querySelector('.hero');
+  const photo = document.getElementById('heroPhoto');
+  if (!hero || !photo) return;
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;   // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    photo.style.transform = `scale(1.08) translate(${x * -20}px, ${y * -20}px)`;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    photo.style.transform = 'scale(1.05) translate(0, 0)';
+    photo.style.transition = 'transform 0.6s ease-out';
+    setTimeout(() => { photo.style.transition = 'transform 0.1s ease-out'; }, 600);
+  });
+})();
+
+// ══════════════════════════════════════
+//  BOKEH EFFECT
+// ══════════════════════════════════════
+(function initBokeh() {
+  const canvas = document.getElementById('bokehCanvas');
+  const COUNT = 60;
+
+  // Keep canvas height in sync with page
+  function syncHeight() {
+    canvas.style.height = document.documentElement.scrollHeight + 'px';
+  }
+  syncHeight();
+  window.addEventListener('resize', syncHeight);
+  new MutationObserver(syncHeight).observe(document.body, { childList: true, subtree: true });
+
+  const orbs = [];
+
+  function spawnOrb() {
+    const orb = document.createElement('div');
+    orb.className = 'bokeh-orb';
+
+    const size  = Math.random() * 140 + 30;            // 30–170px
+    const x     = Math.random() * 100;
+    const y     = Math.random() * 100;
+    const dur   = Math.random() * 14 + 8;              // 8–22s  (faster)
+    const dx    = (Math.random() - 0.5) * 260;
+    const dy    = (Math.random() - 0.5) * 260;
+    const s2    = Math.random() * 0.6 + 0.7;
+    const delay = Math.random() * -dur;
+    const speed = 0.15 + Math.random() * 0.35;         // parallax speed 0.15–0.5
+
+    const hue   = 25 + Math.random() * 20;
+    const sat   = 40 + Math.random() * 30;
+    const light = 55 + Math.random() * 20;
+    const alpha = 0.08 + Math.random() * 0.14;
+
+    orb.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${x}%; top:${y}%;
+      background: radial-gradient(circle at 35% 35%,
+        hsla(${hue},${sat}%,${light}%,${alpha * 2.5}) 0%,
+        hsla(${hue},${sat}%,${light}%,${alpha}) 40%,
+        hsla(${hue},${sat}%,${light}%,0) 70%);
+      --dx:${dx}px; --dy:${dy}px; --s2:${s2};
+      animation-duration:${dur}s;
+      animation-delay:${delay}s;
+    `;
+
+    canvas.appendChild(orb);
+    orbs.push({ el: orb, speed });
+
+    orb.addEventListener('animationiteration', () => {
+      orb.style.left = Math.random() * 100 + '%';
+      orb.style.top  = Math.random() * 100 + '%';
+    });
+  }
+
+  for (let i = 0; i < COUNT; i++) spawnOrb();
+
+  // Parallax on scroll — each orb drifts at its own speed
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        const sy = window.scrollY;
+        for (const o of orbs) {
+          o.el.style.transform = `translateY(${sy * o.speed}px)`;
+        }
+        ticking = false;
+      });
+    }
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
