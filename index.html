@@ -685,20 +685,26 @@ let lightboxIndex = 0;
 // ══════════════════════════════════════
 //  CLOUDINARY CONFIG
 // ══════════════════════════════════════
+const CLOUD_NAME    = 'dtggws37g';
+const UPLOAD_PRESET = 'Photoflife_Upload';
+
 // Category ↔ tag mapping: upload with these tags, fetch by these tags
 const TAG_ALL       = 'portfolio';    // Every photo gets this tag
 const CAT_TAG_MAP   = { street:'street', portrait:'portrait', landscape:'landscape', film:'film' };
 const TAG_CAT_MAP   = Object.fromEntries(Object.entries(CAT_TAG_MAP).map(([k,v])=>[v,k]));
 
-function getSavedCloudName() { return localStorage.getItem('pf_cloudName') || ''; }
-function getSavedPreset()    { return localStorage.getItem('pf_uploadPreset') || ''; }
+function getCloudName() { return CLOUD_NAME || localStorage.getItem('pf_cloudName') || ''; }
+function getPreset()    { return UPLOAD_PRESET || localStorage.getItem('pf_uploadPreset') || ''; }
 
 // ══════════════════════════════════════
 //  FETCH FROM CLOUDINARY (client-side list API)
 // ══════════════════════════════════════
 async function fetchCloudPhotos() {
-  const cloudName = getSavedCloudName();
-  if (!cloudName) return; // no cloud name configured yet
+  const cloudName = getCloudName();
+  if (!cloudName) {
+    console.warn('Cloud Name not configured — set CLOUD_NAME in the script or upload a photo first');
+    return;
+  }
 
   try {
     const res = await fetch(`https://res.cloudinary.com/${cloudName}/image/list/${TAG_ALL}.json`);
@@ -998,9 +1004,9 @@ async function startUpload() {
 //  INIT
 // ══════════════════════════════════════
 
-// Restore saved Cloudinary credentials
-const _cn = getSavedCloudName();
-const _up = getSavedPreset();
+// Pre-fill Cloudinary credentials from hardcoded config or localStorage
+const _cn = getCloudName();
+const _up = getPreset();
 if (_cn) document.getElementById('cloudName').value    = _cn;
 if (_up) document.getElementById('uploadPreset').value = _up;
 
