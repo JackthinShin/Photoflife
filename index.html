@@ -72,6 +72,23 @@
     }
     .nav-upload-btn:hover { background: var(--warm); }
 
+    /* Lang Switcher */
+    .lang-switch {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--muted); margin-left: 1.5rem; cursor: pointer; user-select: none;
+    }
+    .lang-opt { transition: color 0.2s; }
+    .lang-opt:hover { color: var(--ink); }
+    .lang-opt.active { color: var(--warm); font-weight: bold; }
+    .lang-sep { opacity: 0.3; }
+    /* Mobile lang switch */
+    .mobile-lang {
+      margin-top: 1rem; display: flex; align-items: center; gap: 1rem;
+      font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--muted);
+    }
+    .mobile-lang .lang-opt.active { color: var(--warm); }
+
     /* Hamburger */
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
@@ -541,11 +558,17 @@
 <header id="siteHeader">
   <a href="#" class="logo">Photof<span>life</span></a>
   <nav class="desktop">
-    <a href="#gallery">Gallery</a>
-    <a href="#series">Series</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-    <button class="nav-upload-btn" onclick="openUpload()">+ Upload</button>
+    <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+    <a href="#series" data-i18n="nav_series">Series</a>
+    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="#contact" data-i18n="nav_contact">Contact</a>
+    <button class="nav-upload-btn" onclick="openUpload()" data-i18n="nav_upload">+ Upload</button>
+    <!-- LANG SWITCHER -->
+    <div class="lang-switch">
+      <span class="lang-opt" onclick="setLanguage('en')" data-lang="en">EN</span>
+      <span class="lang-sep">|</span>
+      <span class="lang-opt" onclick="setLanguage('zh')" data-lang="zh">中文</span>
+    </div>
   </nav>
   <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -554,64 +577,69 @@
 
 <!-- ══ MOBILE DRAWER ══ -->
 <div class="mobile-drawer" id="mobileDrawer">
-  <a href="#gallery" onclick="toggleDrawer()">Gallery</a>
-  <a href="#series" onclick="toggleDrawer()">Series</a>
-  <a href="#about" onclick="toggleDrawer()">About</a>
-  <a href="#contact" onclick="toggleDrawer()">Contact</a>
-  <button class="drawer-upload" onclick="toggleDrawer(); openUpload()">+ Upload</button>
+  <a href="#gallery" onclick="toggleDrawer()" data-i18n="nav_gallery">Gallery</a>
+  <a href="#series" onclick="toggleDrawer()" data-i18n="nav_series">Series</a>
+  <a href="#about" onclick="toggleDrawer()" data-i18n="nav_about">About</a>
+  <a href="#contact" onclick="toggleDrawer()" data-i18n="nav_contact">Contact</a>
+  <button class="drawer-upload" onclick="toggleDrawer(); openUpload()" data-i18n="nav_upload">+ Upload</button>
+  <div class="mobile-lang">
+    <span class="lang-opt" onclick="setLanguage('en');toggleDrawer()" data-lang="en">EN</span>
+    <span class="lang-sep">|</span>
+    <span class="lang-opt" onclick="setLanguage('zh');toggleDrawer()" data-lang="zh">中文</span>
+  </div>
 </div>
 
 <!-- ══ BOTTOM NAV ══ -->
 <nav class="bottom-nav">
-  <a href="#gallery" class="active"><span class="bnav-icon">◫</span><span class="bnav-label">Gallery</span></a>
-  <a href="#series"><span class="bnav-icon">⊞</span><span class="bnav-label">Series</span></a>
-  <a href="#about"><span class="bnav-icon">◎</span><span class="bnav-label">About</span></a>
-  <a href="#" onclick="openUpload(); return false;"><span class="bnav-icon">↑</span><span class="bnav-label">Upload</span></a>
+  <a href="#gallery" class="active"><span class="bnav-icon">◫</span><span class="bnav-label" data-i18n="nav_gallery">Gallery</span></a>
+  <a href="#series"><span class="bnav-icon">⊞</span><span class="bnav-label" data-i18n="nav_series">Series</span></a>
+  <a href="#about"><span class="bnav-icon">◎</span><span class="bnav-label" data-i18n="nav_about">About</span></a>
+  <a href="#" onclick="openUpload(); return false;"><span class="bnav-icon">↑</span><span class="bnav-label" data-i18n="nav_upload">Upload</span></a>
 </nav>
 
 <!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-text">
-    <p class="hero-eyebrow">Photography · Gallery · Photoflife</p>
-    <h1 class="hero-title"><span class="hero-brand">Photof<em class="inline">life</em></span><span class="hero-bracket">Capture<em>The Moment</em></span></h1>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Photography · Gallery · Photoflife</p>
+    <h1 class="hero-title"><span class="hero-brand">Photof<em class="inline">life</em></span><span class="hero-bracket" data-i18n="hero_title">[ Capture<em>The Moment</em> ]</span></h1>
     <p class="hero-subtitle">
       <span class="typewriter" id="heroTypewriter"></span>
     </p>
     <div class="hero-cta">
-      <a href="#gallery" class="btn-primary">Browse Works</a>
-      <a href="#about" class="btn-ghost">About Me →</a>
+      <a href="#gallery" class="btn-primary" data-i18n="hero_browse">Browse Works</a>
+      <a href="#about" class="btn-ghost" data-i18n="hero_about">About Me →</a>
     </div>
   </div>
   <div class="hero-image">
     <div class="hero-single-photo" id="heroPhoto"></div>
-    <span class="hero-photo-meta">Photoflife · 2024</span>
+    <span class="hero-photo-meta">Photoflife · 2026</span>
   </div>
 </section>
 
 <!-- ══ STATS ══ -->
 <div class="stats-bar">
-  <div class="stat"><div class="stat-number" id="statPhotos">312</div><div class="stat-label">Photos</div></div>
-  <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Series</div></div>
-  <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Cities</div></div>
-  <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Years</div></div>
+  <div class="stat"><div class="stat-number" id="statPhotos">312</div><div class="stat-label" data-i18n="stat_photos">Photos</div></div>
+  <div class="stat"><div class="stat-number">∞</div><div class="stat-label" data-i18n="stat_series">Series</div></div>
+  <div class="stat"><div class="stat-number">∞</div><div class="stat-label" data-i18n="stat_cities">Cities</div></div>
+  <div class="stat"><div class="stat-number">∞</div><div class="stat-label" data-i18n="stat_years">Years</div></div>
 </div>
 
 <!-- ══ GALLERY ══ -->
 <section id="gallery">
   <div class="section-header">
-    <h2 class="section-title">Recent&nbsp;<em>Collections</em></h2>
-    <span class="section-meta">Latest Works · 2025–2026</span>
+    <h2 class="section-title" data-i18n="gall_title">Recent&nbsp;<em>Collections</em></h2>
+    <span class="section-meta" data-i18n="gall_meta">Latest Works · 2025–2026</span>
   </div>
   <div class="filter-bar" id="filterBar">
     <!-- Filter rows are dynamically generated from Cloudinary context metadata -->
     <div class="filter-row">
       <div class="filter-tabs">
-        <button class="filter-tab active" onclick="filterGallery('all','all')">All</button>
+        <button class="filter-tab active" onclick="filterGallery('all','all')" data-i18n="filter_all">All</button>
       </div>
     </div>
   </div>
   <div class="uploaded-section" id="uploadedSection">
-    <span class="uploaded-badge">✓ Cloudinary CDN</span> Photos synced from Cloudinary
+    <span class="uploaded-badge">✓ Cloudinary CDN</span> <span data-i18n="gall_cdnsync">Photos synced from Cloudinary</span>
   </div>
   <div class="gallery" id="mainGallery"></div>
 </section>
@@ -619,10 +647,10 @@
 <!-- ══ SERIES ══ -->
 <section class="series-section" id="series">
   <div class="series-text">
-    <p class="series-label">Philosophy</p>
-    <h2 class="series-title">Every Frame,<br><em>A Story</em></h2>
-    <p class="series-desc"><em>Life unfolds in quiet moments — a slant of light through a window, strangers passing on a wet street, the stillness before dusk. Photography is how I hold on to what time lets go.</em></p>
-    <a href="#gallery" class="series-link">Browse the Gallery ——</a>
+    <p class="series-label" data-i18n="s1_label">Philosophy</p>
+    <h2 class="series-title" data-i18n="s1_title">Every Frame,<br><em>A Story</em></h2>
+    <p class="series-desc" data-i18n="s1_desc"><em>Life unfolds in quiet moments — a slant of light through a window, strangers passing on a wet street, the stillness before dusk. Photography is how I hold on to what time lets go.</em></p>
+    <a href="#gallery" class="series-link" data-i18n="s1_link">Browse the Gallery ——</a>
   </div>
   <div class="series-visuals">
     <div class="sv-main" id="svMain"><div class="sv-label">No.01</div></div>
@@ -639,20 +667,20 @@
     <div class="sv-sub-2" id="sv2Sub2"><div class="sv-label">No.15</div></div>
   </div>
   <div class="series-text">
-    <p class="series-label">Perspective</p>
-    <h2 class="series-title">The Beauty in<br><em>Ordinary Days</em></h2>
-    <p class="series-desc"><em>A coffee cup catching the morning sun. Shadows stretching across an empty bench. The laughter you almost didn't notice. Life's most beautiful frames are the ones we nearly walk past.</em></p>
-    <a href="#gallery" class="series-link">Explore More ——</a>
+    <p class="series-label" data-i18n="s2_label">Perspective</p>
+    <h2 class="series-title" data-i18n="s2_title">The Beauty in<br><em>Ordinary Days</em></h2>
+    <p class="series-desc" data-i18n="s2_desc"><em>A coffee cup catching the morning sun. Shadows stretching across an empty bench. The laughter you almost didn't notice. Life's most beautiful frames are the ones we nearly walk past.</em></p>
+    <a href="#gallery" class="series-link" data-i18n="s2_link">Explore More ——</a>
   </div>
 </section>
 
 <!-- ══ SERIES 3 ══ -->
 <section class="series-section" id="series3">
   <div class="series-text">
-    <p class="series-label">Moments</p>
-    <h2 class="series-title">Light, Shadow<br><em>& Everything Between</em></h2>
-    <p class="series-desc"><em>We chase sunsets and forget the quiet glow of dawn. We frame the grand and miss the tender. The camera teaches us to slow down — to see what was always there, waiting to be noticed.</em></p>
-    <a href="#gallery" class="series-link">View the Collection ——</a>
+    <p class="series-label" data-i18n="s3_label">Moments</p>
+    <h2 class="series-title" data-i18n="s3_title">Light, Shadow<br><em>& Everything Between</em></h2>
+    <p class="series-desc" data-i18n="s3_desc"><em>We chase sunsets and forget the quiet glow of dawn. We frame the grand and miss the tender. The camera teaches us to slow down — to see what was always there, waiting to be noticed.</em></p>
+    <a href="#gallery" class="series-link" data-i18n="s3_link">View the Collection ——</a>
   </div>
   <div class="series-visuals">
     <div class="sv-main" id="sv3Main"><div class="sv-label">No.05</div></div>
@@ -665,10 +693,10 @@
 <section class="about-section" id="about">
   <div class="about-portrait"></div>
   <div class="about-content">
-    <p class="about-eyebrow">About · Me</p>
-    <h2 class="about-title">My name is<em> Jackthin Shin</em></h2>
-    <p class="about-text">你好 - Hello - Bonjour - Hola - こんにちは - 안녕하세요 - Ciao<br>I'm a photography enthusiast who loves artistic expression, finding overlooked beauty in everyday life. Building Photo<em>flife</em> has been a joyful journey.</p>
-    <p class="about-text" style="margin-top:0.8rem"><em>Photoflife is Photo of our Life</em></p>
+    <p class="about-eyebrow" data-i18n="about_eyebrow">About · Me</p>
+    <h2 class="about-title" data-i18n="about_title">My name is<em> Jackthin Shin</em></h2>
+    <p class="about-text" data-i18n="about_text">你好 - Hello - Bonjour - Hola - こんにちは - 안녕하세요 - Ciao<br>I'm a photography enthusiast who loves artistic expression, finding overlooked beauty in everyday life. Building Photo<em>flife</em> has been a joyful journey.</p>
+    <p class="about-text" style="margin-top:0.8rem" data-i18n="about_slogan"><em>Photoflife is Photo of our Life</em></p>
     <div class="gear-list">
       <span class="gear-tag">Sony A7C2</span><span class="gear-tag">lens 20mm-70mm F4 G</span>
       <span class="gear-tag">iPhone 16 Pro Max</span><span class="gear-tag">SONY ZV-1</span><span class="gear-tag">Photoflife</span>
@@ -680,17 +708,17 @@
 <footer id="contact">
   <div class="footer-brand">
     <a href="#" class="logo">Photof<span>life</span></a>
-    <p class="footer-tagline">用摄影记录正在诞生<br>与正在消逝的一切。</p>
+    <p class="footer-tagline" data-i18n="foot_tagline">用摄影记录正在诞生<br>与正在消逝的一切。</p>
   </div>
   <div>
-    <p class="footer-col-title">Navigation</p>
+    <p class="footer-col-title" data-i18n="foot_nav">Navigation</p>
     <ul class="footer-links">
-      <li><a href="#gallery">Gallery</a></li><li><a href="#series">Series</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li><li><a href="#series" data-i18n="nav_series">Series</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
     </ul>
   </div>
   <div>
-    <p class="footer-col-title">Contact</p>
+    <p class="footer-col-title" data-i18n="nav_contact">Contact</p>
     <ul class="footer-links">
       <li><a href="#">Mail: jackthin@foxmail.com</a></li><li><a href="#">WeChat @JackthinShin</a></li>
       <li><a href="#">Github: JackthinShin</a></li>
@@ -718,77 +746,201 @@
 <div class="upload-modal" id="uploadModal" onclick="closeUpload()">
   <div class="upload-panel" onclick="event.stopPropagation()">
     <button class="upload-close" onclick="closeUpload()">✕</button>
-    <h2 class="upload-title">Upload<em> Photos</em></h2>
-    <p class="upload-subtitle">Cloudinary CDN · Auto-optimized Delivery</p>
+    <h2 class="upload-title" data-i18n="up_title">Upload<em> Photos</em></h2>
+    <p class="upload-subtitle" data-i18n="up_subtitle">Cloudinary CDN · Auto-optimized Delivery</p>
 
     <div class="drop-zone" id="dropZone">
       <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
       <div class="drop-icon">⊕</div>
-      <p class="drop-text">Click to select or drag photos here</p>
-      <p class="drop-sub">JPG · PNG · WebP · HEIC · max 10MB each</p>
+      <p class="drop-text" data-i18n="up_drop_text">Click to select or drag photos here</p>
+      <p class="drop-sub" data-i18n="up_drop_sub">JPG · PNG · WebP · HEIC · max 10MB each</p>
     </div>
 
     <div class="preview-strip" id="previewStrip"></div>
 
     <div class="meta-row">
       <div class="field-group">
-        <label class="field-label">Caption</label>
-        <input class="field-input" id="photoTitle" placeholder="e.g. Morning Boats">
+        <label class="field-label" data-i18n="up_lbl_caption">Caption</label>
+        <input class="field-input" id="photoTitle" data-i18n-ph="up_ph_caption" placeholder="e.g. Morning Boats">
       </div>
       <div class="field-group">
-        <label class="field-label">Location</label>
-        <input class="field-input" id="photoLocation" placeholder="e.g. Tokyo">
+        <label class="field-label" data-i18n="up_lbl_location">Location</label>
+        <input class="field-input" id="photoLocation" data-i18n-ph="up_ph_location" placeholder="e.g. Tokyo">
       </div>
     </div>
     <div class="meta-row">
       <div class="field-group">
-        <label class="field-label">Style</label>
+        <label class="field-label" data-i18n="up_lbl_style">Style</label>
         <select class="field-select" id="ctxStyle">
-          <option value="">— Select —</option>
-          <option value="street">Street</option>
-          <option value="portrait">Portrait</option>
-          <option value="landscape">Landscape</option>
-          <option value="film">Film</option>
-          <option value="architecture">Architecture</option>
-          <option value="food">Food</option>
-          <option value="travel">Travel</option>
-          <option value="abstract">Abstract</option>
+          <option value="" data-i18n="up_sel_default">— Select —</option>
+          <option value="street" data-i18n="style_street">Street</option>
+          <option value="portrait" data-i18n="style_portrait">Portrait</option>
+          <option value="landscape" data-i18n="style_landscape">Landscape</option>
+          <option value="film" data-i18n="style_film">Film</option>
+          <option value="architecture" data-i18n="style_arch">Architecture</option>
+          <option value="food" data-i18n="style_food">Food</option>
+          <option value="travel" data-i18n="style_travel">Travel</option>
+          <option value="abstract" data-i18n="style_abstract">Abstract</option>
         </select>
       </div>
       <div class="field-group">
-        <label class="field-label">Year</label>
+        <label class="field-label" data-i18n="up_lbl_year">Year</label>
         <input class="field-input" id="ctxYear" placeholder="e.g. 2026" type="number" min="2000" max="2099">
       </div>
     </div>
     <div class="meta-row">
       <div class="field-group">
-        <label class="field-label">Mood</label>
+        <label class="field-label" data-i18n="up_lbl_mood">Mood</label>
         <select class="field-select" id="ctxMood">
-          <option value="">— Select —</option>
-          <option value="night">Night</option>
-          <option value="golden-hour">Golden Hour</option>
-          <option value="rainy">Rainy</option>
-          <option value="calm">Calm</option>
-          <option value="moody">Moody</option>
-          <option value="vibrant">Vibrant</option>
-          <option value="minimal">Minimal</option>
+          <option value="" data-i18n="up_sel_default">— Select —</option>
+          <option value="night" data-i18n="mood_night">Night</option>
+          <option value="golden-hour" data-i18n="mood_golden">Golden Hour</option>
+          <option value="rainy" data-i18n="mood_rainy">Rainy</option>
+          <option value="calm" data-i18n="mood_calm">Calm</option>
+          <option value="moody" data-i18n="mood_moody">Moody</option>
+          <option value="vibrant" data-i18n="mood_vibrant">Vibrant</option>
+          <option value="minimal" data-i18n="mood_minimal">Minimal</option>
         </select>
       </div>
       <div class="field-group">
-        <label class="field-label">Extra <span style="opacity:0.5;font-size:0.65em">key=value, comma separated</span></label>
-        <input class="field-input" id="ctxExtra" placeholder="e.g. camera=Fuji X100V, film=Portra 400">
+        <label class="field-label">Extra <span style="opacity:0.5;font-size:0.65em">key=value</span></label>
+        <input class="field-input" id="ctxExtra" data-i18n-ph="up_ph_extra" placeholder="e.g. camera=Fuji X100V, film=Portra 400">
       </div>
     </div>
 
     <div class="progress-bar-wrap" id="progressWrap">
       <div class="progress-bar" id="progressBar"></div>
     </div>
-    <p class="upload-status" id="uploadStatus">Ready</p>
-    <button class="upload-submit" id="uploadSubmit" onclick="startUpload()">Upload to Cloudinary</button>
+    <p class="upload-status" id="uploadStatus" data-i18n="up_ready">Ready</p>
+    <button class="upload-submit" id="uploadSubmit" onclick="startUpload()" data-i18n="up_btn_upload">Upload to Cloudinary</button>
   </div>
 </div>
 
 <script>
+// ══════════════════════════════════════
+//  I18N (Language Switcher)
+// ══════════════════════════════════════
+const TRANSLATIONS = {
+  en: {
+    nav_gallery: "Gallery", nav_series: "Series", nav_about: "About", nav_contact: "Contact", nav_upload: "+ Upload",
+    hero_eyebrow: "Photography · Gallery · Photoflife",
+    hero_title: "Capture<em>The Moment</em>",
+    hero_browse: "Browse Works", hero_about: "About Me →",
+    stat_photos: "Photos", stat_series: "Series", stat_cities: "Cities", stat_years: "Years",
+    gall_title: "Recent&nbsp;<em>Collections</em>",
+    gall_meta: "Latest Works · 2025–2026",
+    filter_all: "All",
+    gall_cdnsync: "Photos synced from Cloudinary",
+    s1_label: "Philosophy", s1_title: "Every Frame,<br><em>A Story</em>", s1_desc: "<em>Life unfolds in quiet moments — a slant of light through a window, strangers passing on a wet street, the stillness before dusk. Photography is how I hold on to what time lets go.</em>", s1_link: "Browse the Gallery ——",
+    s2_label: "Perspective", s2_title: "The Beauty in<br><em>Ordinary Days</em>", s2_desc: "<em>A coffee cup catching the morning sun. Shadows stretching across an empty bench. The laughter you almost didn't notice. Life's most beautiful frames are the ones we nearly walk past.</em>", s2_link: "Explore More ——",
+    s3_label: "Moments", s3_title: "Light, Shadow<br><em>& Everything Between</em>", s3_desc: "<em>We chase sunsets and forget the quiet glow of dawn. We frame the grand and miss the tender. The camera teaches us to slow down — to see what was always there, waiting to be noticed.</em>", s3_link: "View the Collection ——",
+    about_eyebrow: "About · Me", about_title: "My name is<em> Jackthin Shin</em>",
+    about_text: "你好 - Hello - Bonjour - Hola - こんにちは - 안녕하세요 - Ciao<br>I'm a photography enthusiast who loves artistic expression, finding overlooked beauty in everyday life. Building Photo<em>flife</em> has been a joyful journey.",
+    about_slogan: "<em>Photoflife is Photo of our Life</em>",
+    foot_tagline: "Recording what is being born<br>and what is fading away.",
+    foot_nav: "Navigation",
+    up_title: "Upload<em> Photos</em>", up_subtitle: "Cloudinary CDN · Auto-optimized Delivery",
+    up_drop_text: "Click to select or drag photos here", up_drop_sub: "JPG · PNG · WebP · HEIC · max 10MB each",
+    up_lbl_caption: "Caption", up_ph_caption: "e.g. Morning Boats",
+    up_lbl_location: "Location", up_ph_location: "e.g. Tokyo",
+    up_lbl_style: "Style", up_sel_default: "— Select —",
+    up_lbl_year: "Year",
+    up_lbl_mood: "Mood",
+    up_ph_extra: "e.g. camera=Fuji X100V, film=Portra 400",
+    up_ready: "Ready", up_btn_upload: "Upload to Cloudinary",
+    style_street: "Street", style_portrait: "Portrait", style_landscape: "Landscape", style_film: "Film",
+    style_arch: "Architecture", style_food: "Food", style_travel: "Travel", style_abstract: "Abstract",
+    mood_night: "Night", mood_golden: "Golden Hour", mood_rainy: "Rainy", mood_calm: "Calm",
+    mood_moody: "Moody", mood_vibrant: "Vibrant", mood_minimal: "Minimal",
+    msg_select_first: "⚠ Please select photos first",
+    msg_uploaded: "✓ Successfully uploaded!",
+    msg_uploading: "Uploading...",
+    dim_style: "Style", dim_location: "Location", dim_year: "Year", dim_mood: "Mood"
+  },
+  zh: {
+    nav_gallery: "画廊", nav_series: "系列", nav_about: "关于", nav_contact: "联系", nav_upload: "+ 上传作品",
+    hero_eyebrow: "摄影 · 展厅 · Photoflife",
+    hero_title: "捕捉<em>每一个瞬间</em>",
+    hero_browse: "浏览作品", hero_about: "关于我 →",
+    stat_photos: "张作品", stat_series: "个系列", stat_cities: "个城市", stat_years: "年经历",
+    gall_title: "近期&nbsp;<em>精选集</em>",
+    gall_meta: "最新作品 · 2025–2026",
+    filter_all: "全部",
+    gall_cdnsync: "照片已从 Cloudinary 同步",
+    s1_label: "理念", s1_title: "每一帧<br><em>都是故事</em>", s1_desc: "<em>生活在静谧的时刻展开——窗边的一束光，湿漉街道上的行人，黄昏前的寂静。摄影是我留住时间的方式。</em>", s1_link: "浏览画廊 ——",
+    s2_label: "视角", s2_title: "日常里的<br><em>不凡之美</em>", s2_desc: "<em>清晨阳光下的咖啡杯，空长椅上拉长的影子，你未曾在意的笑声。生活最美的画面往往是我们匆匆路过的瞬间。</em>", s2_link: "探索更多 ——",
+    s3_label: "瞬间", s3_title: "光，影<br><em>与之间的一切</em>", s3_desc: "<em>我们在追逐日落时忘记了黎明的微光。我们框住了宏大却错过了温柔。相机教会我慢下来——去看见那些一直都在等待被发现的事物。</em>", s3_link: "查看合集 ——",
+    about_eyebrow: "关于 · 我", about_title: "我是<em> Jackthin Shin</em>",
+    about_text: "你好 - Hello - Bonjour - Hola - こんにちは - 안녕하세요 - Ciao<br>我是一名摄影爱好者，喜欢艺术表达，喜欢在平淡日常中寻找被忽视的美。搭建 Photo<em>flife</em> 是我的一段快乐旅程。",
+    about_slogan: "<em>Photoflife 即 Photo of our Life</em>",
+    foot_tagline: "用摄影记录正在诞生<br>与正在消逝的一切。",
+    foot_nav: "导航",
+    up_title: "上传<em>照片</em>", up_subtitle: "Cloudinary CDN · 自动优化分发",
+    up_drop_text: "点击选择 或 拖拽照片到此处", up_drop_sub: "JPG · PNG · WebP · HEIC · 最大 10MB/张",
+    up_lbl_caption: "标题 / Caption", up_ph_caption: "例如：晨间的船",
+    up_lbl_location: "地点 / Location", up_ph_location: "例如：东京",
+    up_lbl_style: "风格 / Style", up_sel_default: "— 请选择 —",
+    up_lbl_year: "年份 / Year",
+    up_lbl_mood: "氛围 / Mood",
+    up_ph_extra: "例如：camera=Fuji X100V, film=Portra 400",
+    up_ready: "准备就绪", up_btn_upload: "开始上传到 Cloudinary",
+    style_street: "街头", style_portrait: "人像", style_landscape: "风光", style_film: "胶片",
+    style_arch: "建筑", style_food: "美食", style_travel: "旅行", style_abstract: "抽象",
+    mood_night: "夜景", mood_golden: "黄金时刻", mood_rainy: "雨天", mood_calm: "宁静",
+    mood_moody: "情绪", mood_vibrant: "鲜艳", mood_minimal: "极简",
+    msg_select_first: "⚠ 请先选择照片",
+    msg_uploaded: "✓ 上传成功！",
+    msg_uploading: "正在上传...",
+    dim_style: "风格", dim_location: "地点", dim_year: "年份", dim_mood: "氛围"
+  }
+};
+
+let currentLang = 'en';
+
+function setLanguage(lang) {
+  if (!TRANSLATIONS[lang]) return;
+  currentLang = lang;
+  localStorage.setItem('pf_lang', lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+  // Update URL param without reload
+  const url = new URL(window.location);
+  url.searchParams.set('lang', lang);
+  window.history.replaceState({}, '', url);
+
+  // Update DOM text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (TRANSLATIONS[lang][key]) el.innerHTML = TRANSLATIONS[lang][key];
+  });
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (TRANSLATIONS[lang][key]) el.placeholder = TRANSLATIONS[lang][key];
+  });
+
+  // Update switcher state
+  document.querySelectorAll('.lang-opt').forEach(el => {
+    el.classList.toggle('active', el.dataset.lang === lang);
+  });
+  
+  // Re-build filter UI to update dimension labels
+  if (typeof buildFilterUI === 'function') buildFilterUI();
+}
+
+function t(key) {
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key;
+}
+
+// Init
+(function initLang() {
+  const params = new URLSearchParams(window.location.search);
+  const stored = localStorage.getItem('pf_lang');
+  const browser = navigator.language.startsWith('zh') ? 'zh' : 'en';
+  const lang = params.get('lang') || stored || browser;
+  setLanguage(TRANSLATIONS[lang] ? lang : 'en');
+})();
+
 // ══════════════════════════════════════
 //  DATA
 // ══════════════════════════════════════
@@ -969,7 +1121,7 @@ function toggleDrawer() {
 
 function buildFilterUI() {
   // Collect all context values across all photos, grouped by dimension key
-  const dimValues = {}; // { 'style': Map{ 'street' => 3, 'portrait' => 2 }, ... }
+  const dimValues = {};
   allPhotos().forEach(p => {
     const meta = p.meta || {};
     for (const [key, val] of Object.entries(meta)) {
@@ -993,14 +1145,16 @@ function buildFilterUI() {
   // If no dimensions found, just show "All"
   if (allDimKeys.length === 0) {
     bar.innerHTML = `<div class="filter-row"><div class="filter-tabs">
-      <button class="filter-tab active" onclick="filterGallery('_all','all')">All</button>
+      <button class="filter-tab active" onclick="filterGallery('_all','all')">${t('filter_all')}</button>
     </div></div>`;
     return;
   }
 
   // Build one row per dimension
   allDimKeys.forEach(key => {
-    const dimLabel = DIM_KEYS[key] || key.charAt(0).toUpperCase() + key.slice(1);
+    // Try t('dim_style') -> fallback to DIM_KEYS -> fallback to capitalized key
+    const dimLabel = t('dim_' + key) !== ('dim_' + key) ? t('dim_' + key) : (DIM_KEYS[key] || key.charAt(0).toUpperCase() + key.slice(1));
+    
     const row = document.createElement('div');
     row.className = 'filter-row';
     row.dataset.dim = key;
@@ -1016,7 +1170,7 @@ function buildFilterUI() {
     // "All" button for this dimension
     const allBtn = document.createElement('button');
     allBtn.className = 'filter-tab active';
-    allBtn.textContent = 'All';
+    allBtn.textContent = t('filter_all');
     allBtn.onclick = () => filterGallery(key, 'all');
     tabs.appendChild(allBtn);
 
@@ -1032,7 +1186,12 @@ function buildFilterUI() {
       const btn = document.createElement('button');
       btn.className = 'filter-tab';
       btn.dataset.val = value;
-      btn.innerHTML = `${value}<span class="filter-count"> ${count}</span>`;
+      // Try translating value: e.g. t('style_street'), t('mood_night')
+      // If no translation key exists, t() returns the key itself. We check if it changed.
+      const transKey = key + '_' + value;
+      const displayVal = t(transKey) !== transKey ? t(transKey) : value;
+      
+      btn.innerHTML = `${displayVal}<span class="filter-count"> ${count}</span>`;
       btn.onclick = () => filterGallery(key, value);
       tabs.appendChild(btn);
     });
@@ -1206,7 +1365,7 @@ function setStatus(msg, type) {
 async function startUpload() {
   const cloudName = CLOUD_NAME;
   const preset    = UPLOAD_PRESET;
-  if (!selectedFiles.length)     { setStatus('⚠ Please select photos first', 'error'); return; }
+  if (!selectedFiles.length)     { setStatus(t('msg_select_first'), 'error'); return; }
 
   // Save credentials for future use (kept for backward compat)
   localStorage.setItem('pf_cloudName', cloudName);
@@ -1261,7 +1420,7 @@ async function startUpload() {
   const results = [];
 
   for (const file of selectedFiles) {
-    setStatus(`Uploading ${done + 1} / ${selectedFiles.length}…`, '');
+    setStatus(t('msg_uploading') + ` ${done + 1} / ${selectedFiles.length}…`, '');
     pb.style.width = `${(done / selectedFiles.length) * 90}%`;
 
     const itemTitle = selectedFiles.length === 1 ? title : `${title} ${done + 1}`;
@@ -1303,7 +1462,7 @@ async function startUpload() {
   pb.style.width = '100%';
   // Add to session photos so they appear immediately (before Cloudinary cache refreshes)
   sessionPhotos = [...results, ...sessionPhotos];
-  setStatus(`✓ Successfully uploaded ${done} photo(s)!`, 'success');
+    setStatus(t('msg_uploaded') + ` (${done})`, 'success');
   btn.disabled = false;
 
   // Reset
@@ -1313,7 +1472,7 @@ async function startUpload() {
   document.getElementById('photoTitle').value       = '';
   document.getElementById('photoLocation').value    = '';
   document.getElementById('ctxStyle').value         = '';
-  document.getElementById('ctxYear').value          = '';
+  document.getElementById('ctxYear').value          = new Date().getFullYear();
   document.getElementById('ctxMood').value          = '';
   document.getElementById('ctxExtra').value         = '';
 
@@ -1323,12 +1482,10 @@ async function startUpload() {
 
   setTimeout(() => {
     closeUpload();
-    pw.style.display = 'none'; pb.style.width = '0'; setStatus('Ready', '');
+    pw.style.display = 'none'; pb.style.width = '0'; setStatus(t('up_ready'), '');
     document.querySelector('#gallery').scrollIntoView({ behavior:'smooth' });
   }, 1800);
-}
-
-// ══════════════════════════════════════
+}// ══════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════
 
