@@ -932,14 +932,14 @@ function t(key) {
   return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key;
 }
 
-// Init
-(function initLang() {
+// Init logic moved to bottom to ensure dependencies are loaded
+function initLanguageSystem() {
   const params = new URLSearchParams(window.location.search);
   const stored = localStorage.getItem('pf_lang');
   const browser = navigator.language.startsWith('zh') ? 'zh' : 'en';
   const lang = params.get('lang') || stored || browser;
   setLanguage(TRANSLATIONS[lang] ? lang : 'en');
-})();
+}
 
 // ══════════════════════════════════════
 //  DATA
@@ -1485,15 +1485,21 @@ async function startUpload() {
     pw.style.display = 'none'; pb.style.width = '0'; setStatus(t('up_ready'), '');
     document.querySelector('#gallery').scrollIntoView({ behavior:'smooth' });
   }, 1800);
-}// ══════════════════════════════════════
+}
+
+// ══════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════
 
 // Auto-fill Year field with current year
 document.getElementById('ctxYear').value = new Date().getFullYear();
 
+// Initialize language system (must run after dependencies are loaded)
+initLanguageSystem();
+
 // Render with placeholders first, then fetch real data
-buildFilterUI();
+// (Note: initLanguageSystem calls buildFilterUI once, but we call it here to be sure)
+if (!activeFilters.style) buildFilterUI(); 
 renderGallery();
 // Fetch photos from Cloudinary (will re-render gallery when done)
 fetchCloudPhotos();
